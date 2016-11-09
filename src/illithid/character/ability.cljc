@@ -2,6 +2,7 @@
   (:require [clojure.spec :as s #?@(:cljs [:include-macros true])]))
 
 (def abilities #{::str ::dex ::con ::int ::wis ::cha})
+(defn ability? [x] (-> x abilities boolean))
 (s/def ::ability abilities)
 
 (def max-natural-ability 18)

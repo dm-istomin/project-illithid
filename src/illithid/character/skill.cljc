@@ -23,4 +23,5 @@
    ::survival          ::a/wis})
 
 (def skills (-> ability-for-skill keys set))
+(defn skill? [x] (-> x skills boolean))
 (s/def ::skill skills)
