@@ -1,6 +1,6 @@
-(ns illithid.skill
-  (:require [clojure.spec :as s]
-            [illithid.ability :as a]))
+(ns illithid.character.skill
+  (:require [clojure.spec :as s #?@(:cljs [:include-macros true])]
+            [illithid.character.ability :as a]))
 
 (def ability-for-skill
   {::acrobatics        ::a/dex
@@ -23,4 +23,5 @@
    ::survival          ::a/wis})
 
 (def skills (-> ability-for-skill keys set))
+(defn skill? [x] (-> x skills boolean))
 (s/def ::skill skills)
