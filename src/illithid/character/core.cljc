@@ -14,7 +14,9 @@
                                                :kind set? :into #{}))
 
 (s/def ::character
-  (:req s/keys [::name
+  (s/keys :req [::name
                 ::abilities
-                #_::skill-proficiencies
-                #_::saving-throw-proficiencies]))
+                ::skill-proficiencies
+                ::saving-throw-proficiencies]))
+
+(defn strength [ch] (-> ch ::abilities ::a/str))
