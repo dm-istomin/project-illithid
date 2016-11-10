@@ -1,32 +1,37 @@
 (ns illithid.handlers
   (:require
-    [re-frame.core :refer [register-handler after]]
-    [schema.core :as s :include-macros true]
-    [illithid.db :refer [app-db schema]]))
+    [re-frame.core :refer [reg-event-db after]]
+    [clojure.spec :as s :include-macros true]
+    [illithid.db :as db :refer [app-db]]
+    [illithid.character.core :as c]
+    [illithid.character.ability :as a]))
 
-;; -- Middleware ------------------------------------------------------------
-;;
-;; See https://github.com/Day8/re-frame/wiki/Using-Handler-Middleware
-;;
-(defn check-and-throw
-  "throw an exception if db doesn't match the schema."
-  [a-schema db]
-    (if-let [problems (s/check a-schema db)]
-      (throw (js/Error. (str "schema check failed: " problems)))))
+;;;
 
-(def validate-schema-mw
-  (after (partial check-and-throw schema)))
+(defn validate-schema!
+  "Throw an exception if db doesn't match the schema."
+  [db]
+  (when-not (s/valid? ::db/db db)
+    (throw (js/Error. (str "schema check failed: "
+                           (s/explain-str ::db/db db))))))
 
-;; -- Handlers --------------------------------------------------------------
+(def midddleware [(after validate-schema!)])
 
-(register-handler
+;;;
+
+(reg-event-db
   :initialize-db
-  validate-schema-mw
-  (fn [_ _]
-    app-db))
+  midddleware
+  (fn [_ _] app-db))
 
-(register-handler
-  :set-greeting
-  validate-schema-mw
-  (fn [db [_ value]]
-    (assoc db :greeting value)))
+(reg-event-db
+  :set-ability
+  midddleware
+  (fn [db [_ ability new-value]]
+    (assoc-in db [::db/character ::c/abilities ability] new-value)))
+
+(reg-event-db
+  :adjust-ability
+  midddleware
+  (fn [db [_ ability change]]
+    (update-in db [::db/character ::c/abilities ability] (partial + change))))

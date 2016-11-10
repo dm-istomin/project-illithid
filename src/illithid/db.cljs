@@ -1,8 +1,9 @@
 (ns illithid.db
-  (:require [schema.core :as s :include-macros true]))
+  (:require [clojure.spec :as s :include-macros true]
+            [illithid.character.core :as c]))
 
-;; schema of app-db
-(def schema {:greeting s/Str})
+(s/def ::character ::c/character)
+(s/def ::db (s/keys :opt [::character]))
 
 ;; initial state of app-db
-(def app-db {:greeting "Hello Clojure in iOS and Android!"})
+(def app-db {::character c/empty-character})

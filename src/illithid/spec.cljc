@@ -5,7 +5,7 @@
   (let [opts (->> opts
                   (partition 2)
                   (into {})
-                  (merge {:kind set? :into #{}})
+                  (merge {:kind `set? :into #{}})
                   (into [])
                   (flatten))]
     `(s/coll-of ~sp ~@opts)))
