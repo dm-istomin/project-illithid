@@ -2,7 +2,8 @@
   (:require [reagent.core :as r :refer [atom]]
             [re-frame.core :refer [subscribe dispatch dispatch-sync]]
             [illithid.handlers]
-            [illithid.subs]))
+            [illithid.subs]
+            [illithid.character.ability :as a]))
 
 (def react-native (js/require "react-native"))
 
@@ -11,6 +12,7 @@
 (def view (r/adapt-react-class (.-View react-native)))
 (def image (r/adapt-react-class (.-Image react-native)))
 (def touchable-highlight (r/adapt-react-class (.-TouchableHighlight react-native)))
+(def text-input (r/adapt-react-class (.-TextInput react-native)))
 
 (def logo-img (js/require "./images/cljs.png"))
 
@@ -18,16 +20,21 @@
       (.alert (.-Alert react-native) title))
 
 (defn app-root []
-  (let [greeting (subscribe [:get-greeting])]
+  (let [abilities (for [ability a/abilities]
+                    {:ability  ability
+                     :score    (subscribe [:get-ability ability])
+                     :modifier (subscribe [:get-ability-modifier ability])})]
     (fn []
       [view {:style {:flex-direction "column" :margin 40 :align-items "center"}}
-       [text {:style {:font-size 30 :font-weight "100" :margin-bottom 20 :text-align "center"}} @greeting]
-       [image {:source logo-img
-               :style  {:width 80 :height 80 :margin-bottom 30}}]
-       [touchable-highlight {:style {:background-color "#999" :padding 10 :border-radius 5}
-                             :on-press #(alert "HELLO!")}
-        [text {:style {:color "white" :text-align "center" :font-weight "bold"}} "press me"]]])))
+       (doall
+         (for [{:keys [ability score modifier]} abilities]
+           [view {:key ability}
+            [text (name ability)]
+            [text (when (pos? @modifier) "+") @modifier]
+            [text-input
+             {:on-change-text #(dispatch [:set-ability ability (js/parseInt %)])
+              :value (str @score)}]]))])))
 
 (defn init []
-      (dispatch-sync [:initialize-db])
-      (.registerComponent app-registry "Illithid" #(r/reactify-component app-root)))
+  (dispatch-sync [:initialize-db])
+  (.registerComponent app-registry "Illithid" #(r/reactify-component app-root)))

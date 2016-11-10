@@ -26,6 +26,19 @@
                 ::skill-proficiencies
                 ::saving-throw-proficiencies]))
 
+(def empty-character
+  {::name "-"
+   ::level 1
+   ::class c/empty-class
+   ::abilities {::a/str 1
+                ::a/dex 1
+                ::a/con 1
+                ::a/int 1
+                ::a/wis 1
+                ::a/cha 1}
+   ::skill-proficiencies #{}
+   ::saving-throw-proficiencies #{}})
+
 (defn ability-modifier [character ability]
   (-> character ::abilities ability a/modifier))
 
