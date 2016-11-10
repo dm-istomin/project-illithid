@@ -1,6 +1,7 @@
-(ns illithid.character.class
+(ns illithid.character.cclass
   (:require [clojure.spec :as s #?@(:cljs [:include-macros true])]
-            [clojure.spec.gen :as gen]
+            #?(:clj  [clojure.spec.gen :as gen]
+               :cljs [cljs.spec.impl.gen :as gen])
             [illithid.die :as die]))
 
 (def max-level 20)
@@ -14,10 +15,16 @@
                                 :kind vector? :into [])
                      #(= % (sort %)))
     #(gen/fmap (comp vec sort)
-               (s/gen (s/coll-of (s/and int? pos?) :count num-levels)))))
+               (s/gen (s/coll-of (s/and int? pos?) :count max-level)))))
 
 (s/def ::class
   (s/keys :req [::name
                 ::hit-die
                 ::first-level-hit-points
                 ::proficiency-bonuses]))
+
+(def empty-class
+  {::name "-"
+   ::hit-die 2
+   ::first-level-hit-points 1
+   ::proficiency-bonuses (vec (range 1 (inc max-level)))})

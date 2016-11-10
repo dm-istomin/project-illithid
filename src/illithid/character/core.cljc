@@ -2,7 +2,7 @@
   (:require [clojure.spec :as s #?@(:cljs [:include-macros true])]
             [illithid.spec #?@(:clj  [:refer [set-of]]
                                :cljs [:refer-macros [set-of]])]
-            [illithid.character.class :as c]
+            [illithid.character.cclass :as c]
             [illithid.character.ability :as a]
             [illithid.character.skill :as sk]))
 
