@@ -6,7 +6,7 @@
 (s/def ::ability abilities)
 
 (def max-natural-ability 18)
-(s/def ::score (s/and int? pos? #(< % max-natural-ability)))
+(s/def ::score (s/and int? pos? #(<= % max-natural-ability)))
 
 (s/def ::str ::score)
 (s/def ::dex ::score)
@@ -15,7 +15,7 @@
 (s/def ::wis ::score)
 (s/def ::cha ::score)
 
-(s/def ::modifier (s/and int? #(< -4 % 4)))
+(s/def ::modifier (s/and int? #(<= -4 % 4)))
 
 (defn modifier [ability-score]
   (-> ability-score (- 10) (/ 2) Math/floor int))
