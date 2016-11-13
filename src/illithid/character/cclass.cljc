@@ -6,6 +6,7 @@
 
 (def max-level 20)
 
+(s/def ::id keyword?)
 (s/def ::name (s/and string? seq))
 (s/def ::hit-die ::die/die)
 (s/def ::first-level-hit-points int?)
@@ -18,7 +19,8 @@
                (s/gen (s/coll-of (s/and int? pos?) :count max-level)))))
 
 (s/def ::class
-  (s/keys :req [::name
+  (s/keys :req [::id
+                ::name
                 ::hit-die
                 ::first-level-hit-points
                 ::proficiency-bonuses]))

@@ -10,3 +10,7 @@
 (reg-sub
   ::race
   (fn [db _] (-> db ::db/new-character ::c/race)))
+
+(reg-sub
+  ::class
+  (fn [db _] (-> db ::db/new-character ::c/class)))

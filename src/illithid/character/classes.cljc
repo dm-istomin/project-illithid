@@ -4,6 +4,8 @@
             [illithid.character.cclass :as c])
   #?(:cljs (:require-macros [illithid.character.classes :refer [defclass]])))
 
-(resource-macro class :folder "classes" :spec ::c/class)
+#?(:clj (resource-macro class :folder "classes" :spec ::c/class))
 
 (defclass cleric)
+
+(def classes {:cleric cleric})
