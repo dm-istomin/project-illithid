@@ -1,0 +1,9 @@
+#:illithid.character.cclass
+{:name "Cleric"
+ :hit-die 8
+ :first-level-hit-points 8
+ :proficiency-bonuses [2 2 2 2
+                       3 3 3 3
+                       4 4 4 4
+                       5 5 5 5
+                       6 6 6 6]}
