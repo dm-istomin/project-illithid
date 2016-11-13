@@ -2,15 +2,15 @@
   (:require [clojure.spec :as s #?@(:cljs [:include-macros true])]
             [illithid.spec #?@(:clj  [:refer [set-of]]
                                :cljs [:refer-macros [set-of]])]
+            [illithid.character.race :as r]
             [illithid.character.cclass :as c]
             [illithid.character.ability :as a]
             [illithid.character.skill :as sk]))
 
-(s/def ::name (s/and string? seq))
-
+(s/def ::name string?)
 (s/def ::level (s/and int? pos? #(< % c/max-level)))
-
 (s/def ::class ::c/class)
+(s/def ::race ::r/race)
 
 (s/def ::abilities
   (s/keys :req [::a/str ::a/dex ::a/con ::a/int ::a/wis ::a/cha]))
