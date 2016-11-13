@@ -1,14 +1,12 @@
-# illithid
+# Project Illithid
 
-A Clojure library designed to ... well, that part is up to you.
+A Dungeons & Dragons character sheet application for mobile.
 
-## Usage
+## Dependencies
 
-FIXME
+This project has several global dependencies:
 
-## License
-
-Copyright © 2016 FIXME
-
-Distributed under the Eclipse Public License either version 1.0 or (at
-your option) any later version.
+* Node, version >= `6.0.0`
+* Android SDK and Platform files
+* Leiningen
+* React Native CLI: `npm install -g react-native-cli`
