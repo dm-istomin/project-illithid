@@ -1,6 +1,6 @@
 (ns illithid.handlers
   (:require
-    [re-frame.core :refer [reg-event-db after]]
+    [re-frame.core :refer [reg-event-db after debug]]
     [clojure.spec :as s :include-macros true]
     [illithid.db :as db :refer [app-db]]
     [illithid.character.core :as c]
@@ -15,23 +15,23 @@
     (throw (js/Error. (str "schema check failed: "
                            (s/explain-str ::db/db db))))))
 
-(def midddleware [(after validate-schema!)])
+(def middleware [debug (after validate-schema!)])
 
 ;;;
 
 (reg-event-db
   :initialize-db
-  midddleware
+  middleware
   (fn [_ _] app-db))
 
 (reg-event-db
   :set-ability
-  midddleware
+  middleware
   (fn [db [_ ability new-value]]
     (assoc-in db [::db/character ::c/abilities ability] new-value)))
 
 (reg-event-db
   :adjust-ability
-  midddleware
+  middleware
   (fn [db [_ ability change]]
     (update-in db [::db/character ::c/abilities ability] (partial + change))))
