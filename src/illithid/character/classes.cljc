@@ -1,9 +1,10 @@
 (ns illithid.character.classes
-  (:require #?@(:clj [[clojure.java.io :refer [resource file]]
-                      [clojure.edn :as edn]
-                      [clojure.spec :as s]
-                      [illithid.character.cclass :as c]]))
-  (:import [java.io FileReader PushbackReader])
+  #?@(:clj
+       [(:require [clojure.java.io :refer [resource file]]
+                  [clojure.edn :as edn]
+                  [clojure.spec :as s]
+                  [illithid.character.cclass :as c])
+        (:import [java.io FileReader PushbackReader])])
   #?(:cljs (:require-macros [illithid.character.classes :refer [defclass]])))
 
 #?(:clj (defn read-resource [filename]
