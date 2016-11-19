@@ -1,5 +1,6 @@
 #:illithid.character.cclass
-{:name "Cleric"
+{:id :cleric
+ :name "Cleric"
  :hit-die 8
  :first-level-hit-points 8
  :proficiency-bonuses [2 2 2 2
