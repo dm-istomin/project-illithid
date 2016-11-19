@@ -5,8 +5,8 @@
   "scripts": {
     "server": "lein figwheel android",
     "android-dev-menu": "adb shell input keyevent 82",
-    "android-avd": "adb reverse tcp:8081 tcp:8081 && adb reverse tcp:3349 tcp:3349 && ./node_modules/.bin/re-natal use-android-device avd && ./node_modules/.bin/re-natal use-figwheel",
-    "android-real": "adb reverse tcp:8081 tcp:8081 && adb reverse tcp:3349 tcp:3349 && ./node_modules/.bin/re-natal use-android-device real && ./node_modules/.bin/re-natal use-figwheel",
+    "android-avd": "adb reverse tcp:8081 tcp:8081 && adb reverse tcp:3449 tcp:3449 && ./node_modules/.bin/re-natal use-android-device avd && ./node_modules/.bin/re-natal use-figwheel",
+    "android-real": "adb reverse tcp:8081 tcp:8081 && adb reverse tcp:3449 tcp:3449 && ./node_modules/.bin/re-natal use-android-device real && ./node_modules/.bin/re-natal use-figwheel",
     "run-android": "node ./node_modules/.bin/react-native run-android",
     "start": "node ./node_modules/.bin/react-native start"
   },
