@@ -10,6 +10,7 @@
   touchable-highlight TouchableHighlight
   touchable-native-feedback TouchableNativeFeedback
   pan-responder PanResponder
+  picker Picker
   scroll-view ScrollView
   navigator Navigator
   text-input TextInput
@@ -17,5 +18,10 @@
 
 (def DataSource (-> react (aget "ListView") (aget "DataSource")))
 
+;; TODO: update `defclass` to support nested components
+
 (def navigation-bar (r/adapt-react-class
                       (-> react (aget "Navigator") (aget "NavigationBar"))))
+
+(def picker-item (r/adapt-react-class
+                   (-> react (aget "Picker") (aget "Item"))))

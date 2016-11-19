@@ -3,7 +3,8 @@
             [re-frame.core :refer [subscribe dispatch dispatch-sync]]
             [illithid.handlers]
             [illithid.subs]
-            [illithid.character.ability :as a]))
+            [illithid.character.ability :as a]
+            [illithid.components.new-character.basic-info :refer [basic-info]]))
 
 (def react-native (js/require "react-native"))
 

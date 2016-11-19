@@ -4,6 +4,10 @@
             [illithid.character.race :as r])
   #?(:cljs (:require-macros [illithid.character.races :refer [defrace]])))
 
-(resource-macro race :folder "races" :spec ::r/race)
+#?(:clj (resource-macro race :folder "races" :spec ::r/race))
 
 (defrace human)
+(defrace dwarf)
+
+(def races {:human human
+            :dwarf dwarf})
