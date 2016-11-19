@@ -4,6 +4,7 @@
 (defmacro set-of [sp & opts]
   (let [opts (->> opts
                   (partition 2)
+                  (map vec)
                   (into {})
                   (merge {:kind `set? :into #{}})
                   (into [])
