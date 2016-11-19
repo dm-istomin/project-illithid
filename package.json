@@ -3,17 +3,19 @@
   "version": "0.0.1",
   "private": true,
   "scripts": {
-    "start": "node_modules/react-native/packager/packager.sh --nonPersistent",
     "server": "lein figwheel android",
     "android-dev-menu": "adb shell input keyevent 82",
-    "android-avd": "./node_modules/.bin/re-natal use-android-device avd && ./node_modules/.bin/re-natal use-figwheel",
-    "android-real": "adb reverse tcp:8081 tcp:8081 && adb reverse tcp:3349 tcp:3349 && ./node_modules/.bin/re-natal use-figwheel"
+    "android-avd": "adb reverse tcp:8081 tcp:8081 && adb reverse tcp:3349 tcp:3349 && ./node_modules/.bin/re-natal use-android-device avd && ./node_modules/.bin/re-natal use-figwheel",
+    "android-real": "adb reverse tcp:8081 tcp:8081 && adb reverse tcp:3349 tcp:3349 && ./node_modules/.bin/re-natal use-android-device real && ./node_modules/.bin/re-natal use-figwheel",
+    "run-android": "node ./node_modules/.bin/react-native run-android",
+    "start": "node ./node_modules/.bin/react-native start"
   },
   "dependencies": {
     "react": "^0.14.8",
     "react-native": "0.23.1"
   },
   "devDependencies": {
-    "re-natal": "^0.3.1"
+    "re-natal": "^0.3.1",
+    "react-native-cli": "^1.2.0"
   }
 }
