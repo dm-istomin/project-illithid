@@ -25,3 +25,6 @@
 
 (def picker-item (r/adapt-react-class
                    (-> react (aget "Picker") (aget "Item"))))
+
+(defn add-back-listener [h]
+  (.addEventListener (-> react (aget "BackAndroid")) "hardwareBackPress" h))

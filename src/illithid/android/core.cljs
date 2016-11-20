@@ -4,7 +4,9 @@
             [illithid.handlers]
             [illithid.subs]
             [illithid.character.ability :as a]
-            [illithid.components.new-character.basic-info :refer [basic-info]]))
+            [illithid.components.new-character.core :refer [new-character]]
+            [illithid.components.new-character.basic-info]
+            [illithid.components.new-character.abilities]))
 
 (def react-native (js/require "react-native"))
 
@@ -20,7 +22,7 @@
 (defn alert [title]
       (.alert (.-Alert react-native) title))
 
-(defn app-root []
+#_(defn app-root []
   (let [abilities (for [ability a/abilities]
                     {:ability  ability
                      :score    (subscribe [:get-ability ability])
@@ -30,11 +32,14 @@
        (doall
          (for [{:keys [ability score modifier]} abilities]
            [view {:key ability}
-            [text (name ability)]
+            [text (-> ability name .toUpperCase)]
             [text (when (pos? @modifier) "+") @modifier]
             [text-input
              {:on-change-text #(dispatch [:set-ability ability (js/parseInt %)])
               :value (str @score)}]]))])))
+
+(defn app-root []
+  [new-character])
 
 (defn init []
   (dispatch-sync [:initialize-db])

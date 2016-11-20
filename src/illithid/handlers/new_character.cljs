@@ -2,11 +2,24 @@
   (:require [re-frame.core :refer [reg-event-db path]]
             [illithid.db :as db]
             [illithid.character.core :as c]
+            [illithid.character.ability :as a]
             [illithid.character.races :refer [races]]
             [illithid.character.classes :refer [classes]]
             [illithid.handlers :as h]))
 
 (def middleware [h/middleware (path ::db/new-character)])
+
+(reg-event-db
+  ::set-page
+  middleware
+  (fn [db [_ new-page]]
+    (cond-> db
+      true
+      (assoc ::db/new-character-page new-page
+             ::db/previous-page (::db/new-character-page db))
+      (= new-page :abilities)
+      (assoc ::c/abilities
+             (into {} (for [ability a/abilities] [ability 10]))))))
 
 (reg-event-db
   ::set-name
@@ -28,4 +41,23 @@
     (assoc db ::c/class (if (keyword? id-or-class)
                          (get classes id-or-class)
                          id-or-class))))
+
+(reg-event-db
+  ::set-ability
+  middleware
+  (fn [db [_ ability value]]
+    (assoc-in db [::c/abilities ability] value)))
+
+(reg-event-db
+  ::inc-ability
+  middleware
+  (fn [db [_ ability]]
+    (update-in db [::c/abilities ability]
+               #(if (= % a/max-natural-ability) % (inc %)))))
+
+(reg-event-db
+  ::dec-ability
+  middleware
+  (fn [db [_ ability]]
+    (update-in db [::c/abilities ability] #(if (= % 1) % (dec %)))))
 

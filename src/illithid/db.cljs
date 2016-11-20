@@ -5,14 +5,21 @@
 (s/def ::state keyword?)
 (defmulti state ::state)
 
-(s/def ::new-character (s/keys :opt [::c/name ::c/class ::c/race]))
+(s/def ::new-character-page #{:basic-info
+                              :abilities})
+(s/def ::previous-page ::new-character-page)
 
-(defmethod state ::new-character [_]
-  (s/keys :req [::new-character]))
+(s/def ::new-character
+  (s/keys :req [::new-character-page]
+          :opt [::c/name ::c/class ::c/race ::c/abilities
+                ::previous-page]))
+
+(defmethod state ::new-character [_] (s/keys :req [::new-character]))
+(defmethod state ::abilities [_] (s/keys :req [::abilities]))
 
 (s/def ::character ::c/character)
 (s/def ::db (s/multi-spec state ::state))
 
 ;; initial state of app-db
 (def app-db {::state ::new-character
-             ::new-character {}})
+             ::new-character {::new-character-page :basic-info}})

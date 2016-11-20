@@ -8,10 +8,12 @@
             [illithid.character.classes :refer [classes]]
             [illithid.subs.new-character :as sub]
             [illithid.handlers.new-character :as pub]
-            [illithid.components.native :refer [view text text-input]]
+            [illithid.components.new-character.core :refer [render-page]]
+            [illithid.components.native
+             :refer [view text text-input touchable-highlight]]
             [illithid.components.picker :refer [picker]]))
 
-(defn basic-info []
+(defmethod render-page :basic-info []
   (let [character-name (subscribe [::sub/name])
         character-race (subscribe [::sub/race])
         character-class (subscribe [::sub/class])]
@@ -40,4 +42,6 @@
                 :id-fn ::cclass/id
                 :display-fn ::cclass/name
                 :value (::cclass/id @character-class)
-                :on-change #(dispatch [::pub/set-class %])}]])))
+                :on-change #(dispatch [::pub/set-class %])}]
+       [touchable-highlight {:on-press #(dispatch [::pub/set-page :abilities])}
+        [text "Next"]]])))
