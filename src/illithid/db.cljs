@@ -17,9 +17,10 @@
                 ::previous-page]))
 
 (defmethod state ::new-character [_] (s/keys :req [::new-character]))
-(defmethod state ::abilities [_] (s/keys :req [::abilities]))
 
 (s/def ::character ::c/character)
+(defmethod state ::view-character [_] (s/keys :req [::character]))
+
 (s/def ::db (s/multi-spec state ::state))
 
 ;; initial state of app-db

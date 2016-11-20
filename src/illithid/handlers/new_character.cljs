@@ -3,9 +3,34 @@
             [illithid.db :as db]
             [illithid.character.core :as c]
             [illithid.character.ability :as a]
+            [illithid.character.cclass :as cl]
             [illithid.character.races :refer [races]]
             [illithid.character.classes :refer [classes]]
             [illithid.handlers :as h]))
+
+;; Save the new character to ::db/character
+(reg-event-db
+  ::save
+  h/middleware
+  (fn [{::db/keys [new-character] :as db} _]
+    (let [saving-throw-proficiencies (-> new-character
+                                         ::c/class
+                                         ::cl/saving-throw-proficiencies)
+          chr
+          (-> new-character
+              (select-keys
+                [::c/name
+                 ::c/class
+                 ::c/race
+                 ::c/abilities
+                 ::c/skill-proficiencies])
+              (assoc
+                ::c/level 1
+                ::c/saving-throw-proficiencies saving-throw-proficiencies))]
+      (-> db
+          (dissoc ::db/new-character)
+          (assoc ::db/character chr
+                 ::db/state ::db/view-character)))))
 
 (def middleware [h/middleware (path ::db/new-character)])
 

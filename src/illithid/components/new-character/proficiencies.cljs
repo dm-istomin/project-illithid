@@ -5,7 +5,7 @@
             [illithid.handlers.new-character :as pub]
             [illithid.components.new-character.core :refer [render-page]]
             [illithid.components.native
-             :refer [view scroll-view text switch]]))
+             :refer [view scroll-view text switch touchable-highlight]]))
 
 (defn- skill-switch [skill]
   (let [proficient? (subscribe [::sub/proficient? skill])
@@ -29,5 +29,7 @@
        [text "Pick " (str @num-skills) " of the following skills"]
        (doall (for [skill @available-skills]
                 ^{:key skill}
-                [skill-switch skill]))])))
+                [skill-switch skill]))
+       [touchable-highlight {:on-press #(dispatch [::pub/save])}
+        [text "Save"]]])))
 
