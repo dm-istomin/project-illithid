@@ -22,6 +22,7 @@
   (s/keys :req [::name
                 ::level
                 ::class
+                ::race
                 ::abilities
                 ::skill-proficiencies
                 ::saving-throw-proficiencies]))

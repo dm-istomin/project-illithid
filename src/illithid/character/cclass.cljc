@@ -5,7 +5,8 @@
             #?(:clj  [clojure.spec.gen :as gen]
                :cljs [cljs.spec.impl.gen :as gen])
             [illithid.die :as die]
-            [illithid.character.skill :as sk]))
+            [illithid.character.skill :as sk]
+            [illithid.character.ability :as a]))
 
 (def max-level 20)
 
@@ -18,6 +19,8 @@
 (s/def :skill-proficiencies/number (s/and int? pos?))
 (s/def ::skill-proficiencies (s/keys :req [:skill-proficiencies/available
                                            :skill-proficiencies/number]))
+
+(s/def ::saving-throw-proficiencies (set-of ::a/ability))
 
 (s/def ::proficiency-bonuses
   (s/with-gen (s/and (s/coll-of (s/and int? pos?)
@@ -33,10 +36,12 @@
                 ::hit-die
                 ::first-level-hit-points
                 ::proficiency-bonuses
-                ::skill-proficiencies]))
+                ::skill-proficiencies
+                ::saving-throw-proficiencies]))
 
 (def empty-class
   {::name "-"
    ::hit-die 2
    ::first-level-hit-points 1
    ::proficiency-bonuses (vec (range 1 (inc max-level)))})
+

@@ -2,9 +2,11 @@
   (:require [reagent.core :as r :refer [atom]]
             [re-frame.core :refer [subscribe dispatch dispatch-sync]]
             [illithid.handlers]
-            [illithid.subs]
+            [illithid.db :as db]
+            [illithid.subs :as sub]
             [illithid.character.ability :as a]
             [illithid.components.new-character.core :refer [new-character]]
+            [illithid.components.view-character.core :refer [view-character]]
             [illithid.components.new-character.basic-info]
             [illithid.components.new-character.abilities]
             [illithid.components.new-character.proficiencies]))
@@ -40,7 +42,11 @@
               :value (str @score)}]]))])))
 
 (defn app-root []
-  [new-character])
+  (let [state (subscribe [::sub/state])]
+    (fn []
+      (case @state
+        ::db/new-character  [new-character]
+        ::db/view-character [view-character]))))
 
 (defn init []
   (dispatch-sync [:initialize-db])
