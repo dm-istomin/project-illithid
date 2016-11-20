@@ -12,6 +12,9 @@
                                     :illithid.character.skill/religion}
                        :number 2}
 
+ :saving-throw-proficiencies #{:illithid.character.ability/wis
+                               :illithid.character.ability/cha}
+
  :proficiency-bonuses [2 2 2 2
                        3 3 3 3
                        4 4 4 4
