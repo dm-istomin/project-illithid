@@ -3,6 +3,15 @@
  :name "Cleric"
  :hit-die 8
  :first-level-hit-points 8
+
+ :skill-proficiencies
+ #:skill-proficiencies{:available #{:illithid.character.skill/history
+                                    :illithid.character.skill/insight
+                                    :illithid.character.skill/medicine
+                                    :illithid.character.skill/persuasion
+                                    :illithid.character.skill/religion}
+                       :number 2}
+
  :proficiency-bonuses [2 2 2 2
                        3 3 3 3
                        4 4 4 4
