@@ -14,7 +14,8 @@
   scroll-view ScrollView
   navigator Navigator
   text-input TextInput
-  list-view ListView)
+  list-view ListView
+  switch Switch)
 
 (def DataSource (-> react (aget "ListView") (aget "DataSource")))
 

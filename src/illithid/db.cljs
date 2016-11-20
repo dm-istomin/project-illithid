@@ -6,12 +6,14 @@
 (defmulti state ::state)
 
 (s/def ::new-character-page #{:basic-info
-                              :abilities})
+                              :abilities
+                              :proficiencies})
 (s/def ::previous-page ::new-character-page)
 
 (s/def ::new-character
   (s/keys :req [::new-character-page]
           :opt [::c/name ::c/class ::c/race ::c/abilities
+                ::c/skill-proficiencies
                 ::previous-page]))
 
 (defmethod state ::new-character [_] (s/keys :req [::new-character]))

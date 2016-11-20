@@ -6,7 +6,8 @@
             [illithid.character.ability :as a]
             [illithid.components.new-character.core :refer [new-character]]
             [illithid.components.new-character.basic-info]
-            [illithid.components.new-character.abilities]))
+            [illithid.components.new-character.abilities]
+            [illithid.components.new-character.proficiencies]))
 
 (def react-native (js/require "react-native"))
 

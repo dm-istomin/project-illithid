@@ -46,4 +46,8 @@
              [touchable-highlight
               {:on-press #(dispatch [::pub/dec-ability ability])
                :style ability-button-styles}
-              [text {:style {:text-align "center"}} "-"]]]]))])))
+              [text {:style {:text-align "center"}} "-"]]]]))
+       [touchable-highlight
+        {:on-press #(dispatch [::pub/set-page :proficiencies])}
+        [text "Next"]]])))
+

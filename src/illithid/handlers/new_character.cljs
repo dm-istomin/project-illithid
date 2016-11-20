@@ -19,7 +19,9 @@
              ::db/previous-page (::db/new-character-page db))
       (= new-page :abilities)
       (assoc ::c/abilities
-             (into {} (for [ability a/abilities] [ability 10]))))))
+             (into {} (for [ability a/abilities] [ability 10])))
+      (= new-page :proficiencies)
+      (assoc ::c/skill-proficiencies #{}))))
 
 (reg-event-db
   ::set-name
@@ -60,4 +62,10 @@
   middleware
   (fn [db [_ ability]]
     (update-in db [::c/abilities ability] #(if (= % 1) % (dec %)))))
+
+(reg-event-db
+  ::set-skill-proficiency
+  middleware
+  (fn [db [_ skill proficient?]]
+    (update db ::c/skill-proficiencies (if proficient? conj disj) skill)))
 
