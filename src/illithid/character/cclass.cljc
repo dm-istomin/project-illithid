@@ -1,8 +1,11 @@
 (ns illithid.character.cclass
   (:require [clojure.spec :as s #?@(:cljs [:include-macros true])]
+            [illithid.spec #?@(:clj  [:refer [set-of]]
+                               :cljs [:refer-macros [set-of]])]
             #?(:clj  [clojure.spec.gen :as gen]
                :cljs [cljs.spec.impl.gen :as gen])
-            [illithid.die :as die]))
+            [illithid.die :as die]
+            [illithid.character.skill :as sk]))
 
 (def max-level 20)
 
@@ -10,6 +13,12 @@
 (s/def ::name (s/and string? seq))
 (s/def ::hit-die ::die/die)
 (s/def ::first-level-hit-points int?)
+
+(s/def :skill-proficiencies/available (set-of ::sk/skill))
+(s/def :skill-proficiencies/number (s/and int? pos?))
+(s/def ::skill-proficiencies (s/keys :req [:skill-proficiencies/available
+                                           :skill-proficiencies/number]))
+
 (s/def ::proficiency-bonuses
   (s/with-gen (s/and (s/coll-of (s/and int? pos?)
                                 :count max-level
@@ -23,7 +32,8 @@
                 ::name
                 ::hit-die
                 ::first-level-hit-points
-                ::proficiency-bonuses]))
+                ::proficiency-bonuses
+                ::skill-proficiencies]))
 
 (def empty-class
   {::name "-"
