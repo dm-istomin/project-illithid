@@ -21,8 +21,12 @@
 (s/def ::character ::c/character)
 (defmethod state ::view-character [_] (s/keys :req [::character]))
 
-(s/def ::db (s/multi-spec state ::state))
+(s/def ::last-character-id (s/and int? pos?))
+
+(s/def ::db (s/merge (s/multi-spec state ::state)
+                     (s/keys :req [::last-character-id])))
 
 ;; initial state of app-db
 (def app-db {::state ::new-character
-             ::new-character {::new-character-page :basic-info}})
+             ::new-character {::new-character-page :basic-info}
+             ::last-character-id 1})

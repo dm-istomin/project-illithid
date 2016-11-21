@@ -1,5 +1,6 @@
 (ns illithid.handlers.new-character
-  (:require [re-frame.core :refer [reg-event-db path]]
+  (:require [re-frame.core :refer [reg-event-db reg-event-fx path]]
+            [illithid.storage-fx]
             [illithid.db :as db]
             [illithid.character.core :as c]
             [illithid.character.ability :as a]
@@ -8,12 +9,17 @@
             [illithid.character.classes :refer [classes]]
             [illithid.handlers :as h]))
 
+;; db -> [db character-id]
+(defn- gen-character-id [{old-id ::db/last-character-id :as db}]
+  (let [new-id (inc old-id)] [(assoc db ::db/last-character-id new-id) new-id]))
+
 ;; Save the new character to ::db/character
-(reg-event-db
+(reg-event-fx
   ::save
   h/middleware
-  (fn [{::db/keys [new-character] :as db} _]
-    (let [saving-throw-proficiencies (-> new-character
+  (fn [{{new-character ::db/new-character :as db} :db} _]
+    (let [[db character-id] (gen-character-id db)
+          saving-throw-proficiencies (-> new-character
                                          ::c/class
                                          ::cl/saving-throw-proficiencies)
           chr
@@ -27,10 +33,12 @@
               (assoc
                 ::c/level 1
                 ::c/saving-throw-proficiencies saving-throw-proficiencies))]
-      (-> db
-          (dissoc ::db/new-character)
-          (assoc ::db/character chr
-                 ::db/state ::db/view-character)))))
+      {:db (-> db
+               (dissoc ::db/new-character)
+               (assoc ::db/character chr
+                      ::db/state ::db/view-character))
+       :set-storage {:key   (keyword "illithid.character" (str character-id))
+                     :value chr}})))
 
 (def middleware [h/middleware (path ::db/new-character)])
 
