@@ -31,7 +31,8 @@
     (assoc-in db [::db/character ::c/abilities ability] new-value)))
 
 (reg-event-db
-  :adjust-ability
-  middleware
-  (fn [db [_ ability change]]
-    (update-in db [::db/character ::c/abilities ability] (partial + change))))
+  ::create-character
+  (fn [db _]
+    (assoc db
+           ::db/state ::db/new-character
+           ::db/new-character {::db/new-character-page :basic-info})))

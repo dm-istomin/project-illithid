@@ -5,6 +5,8 @@
 (s/def ::state keyword?)
 (defmulti state ::state)
 
+(defmethod state ::welcome [_] (s/keys))
+
 (s/def ::new-character-page #{:basic-info
                               :abilities
                               :proficiencies})
@@ -27,6 +29,5 @@
                      (s/keys :req [::last-character-id])))
 
 ;; initial state of app-db
-(def app-db {::state ::new-character
-             ::new-character {::new-character-page :basic-info}
-             ::last-character-id 1})
+(def app-db {::state ::welcome})
+
