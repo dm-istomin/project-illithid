@@ -1,6 +1,6 @@
 (ns illithid.handlers
   (:require
-    [re-frame.core :refer [reg-event-db after debug]]
+    [re-frame.core :refer [reg-event-db reg-event-fx after debug]]
     [clojure.spec :as s :include-macros true]
     [illithid.db :as db :refer [app-db]]
     [illithid.character.core :as c]
@@ -19,19 +19,27 @@
 
 ;;;
 
-(reg-event-db
+(reg-event-fx
   :initialize-db
   middleware
-  (fn [_ _] app-db))
+  (fn [_ _]
+    {:db app-db
+     :load-storage {:key :character-ids
+                    :or #{}
+                    :into ::db/character-ids
+                    :then-dispatch [::character-ids-loaded]}}))
 
 (reg-event-db
-  :set-ability
+  ::character-ids-loaded
   middleware
-  (fn [db [_ ability new-value]]
-    (assoc-in db [::db/character ::c/abilities ability] new-value)))
+  (fn [{::db/keys [character-ids] :as db} _]
+    (assoc db ::db/last-character-id
+           (apply max
+                  (or (seq (map (comp js/parseInt name) character-ids)) [0])))))
 
 (reg-event-db
-  :adjust-ability
-  middleware
-  (fn [db [_ ability change]]
-    (update-in db [::db/character ::c/abilities ability] (partial + change))))
+  ::create-character
+  (fn [db _]
+    (assoc db
+           ::db/state ::db/new-character
+           ::db/new-character {::db/new-character-page :basic-info})))

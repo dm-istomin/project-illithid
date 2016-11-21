@@ -5,6 +5,7 @@
             [illithid.db :as db]
             [illithid.subs :as sub]
             [illithid.character.ability :as a]
+            [illithid.components.welcome :refer [welcome]]
             [illithid.components.new-character.core :refer [new-character]]
             [illithid.components.view-character.core :refer [view-character]]
             [illithid.components.new-character.basic-info]
@@ -45,6 +46,7 @@
   (let [state (subscribe [::sub/state])]
     (fn []
       (case @state
+        ::db/welcome        [welcome]
         ::db/new-character  [new-character]
         ::db/view-character [view-character]))))
 

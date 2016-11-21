@@ -1,5 +1,7 @@
 (ns illithid.character.core
   (:require [clojure.spec :as s #?@(:cljs [:include-macros true])]
+            #?(:clj  [clojure.spec.gen :as gen]
+               :cljs [cljs.spec.impl.gen :as gen])
             [illithid.spec #?@(:clj  [:refer [set-of]]
                                :cljs [:refer-macros [set-of]])]
             [illithid.character.race :as r]
@@ -7,6 +9,9 @@
             [illithid.character.ability :as a]
             [illithid.character.skill :as sk]))
 
+(s/def ::id (s/with-gen (s/and keyword? #(= "illithid.character" (namespace %)))
+              #(gen/fmap (partial keyword "illithid.character")
+                         (s/gen (s/and string? seq)))))
 (s/def ::name string?)
 (s/def ::level (s/and int? pos? #(< % c/max-level)))
 (s/def ::class ::c/class)
