@@ -11,7 +11,9 @@
 
 ;; db -> [db character-id]
 (defn- gen-character-id [{old-id ::db/last-character-id :as db}]
-  (let [new-id (inc old-id)] [(assoc db ::db/last-character-id new-id) new-id]))
+  (let [new-id (inc old-id)]
+    [(assoc db ::db/last-character-id new-id)
+     (keyword "illithid.character" (str new-id))]))
 
 ;; Save the new character to ::db/character
 (reg-event-fx
@@ -22,6 +24,7 @@
           saving-throw-proficiencies (-> new-character
                                          ::c/class
                                          ::cl/saving-throw-proficiencies)
+          all-character-ids (conj (::db/character-ids db) character-id)
           chr
           (-> new-character
               (select-keys
@@ -36,9 +39,10 @@
       {:db (-> db
                (dissoc ::db/new-character)
                (assoc ::db/character chr
-                      ::db/state ::db/view-character))
-       :set-storage {:key   (keyword "illithid.character" (str character-id))
-                     :value chr}})))
+                      ::db/state ::db/view-character
+                      ::db/character-ids all-character-ids))
+       :set-storage-n [{:key character-id, :value chr}
+                       {:key :character-ids, :value all-character-ids}]})))
 
 (def middleware [h/middleware (path ::db/new-character)])
 

@@ -1,6 +1,7 @@
 (ns illithid.db
   (:require [clojure.spec :as s :include-macros true]
-            [illithid.character.core :as c]))
+            [illithid.character.core :as c]
+            [illithid.spec :refer-macros [set-of]]))
 
 (s/def ::state keyword?)
 (defmulti state ::state)
@@ -23,10 +24,12 @@
 (s/def ::character ::c/character)
 (defmethod state ::view-character [_] (s/keys :req [::character]))
 
-(s/def ::last-character-id (s/and int? pos?))
+(s/def ::last-character-id (s/and int? (complement neg?)))
+(s/def ::character-ids (set-of ::c/id))
 
 (s/def ::db (s/merge (s/multi-spec state ::state)
-                     (s/keys :req [::last-character-id])))
+                     (s/keys :opt [::last-character-id
+                                   ::character-ids])))
 
 ;; initial state of app-db
 (def app-db {::state ::welcome})
