@@ -1,0 +1,840 @@
+(ns illithid.character.spells
+  (:require #?@(:clj [[clojure.spec :as s]
+                       [illithid.resources :refer [resource-macro]]])
+            [illithid.character.spell :as sp])
+  #?(:cljs (:require-macros [illithid.character.spells :refer [defspell]])))
+
+#?(:clj (resource-macro spell :folder "spells"))
+
+; This is not ideal, done with Ruby script - should be automatic
+(defspell compulsion)
+(defspell animate-objects)
+(defspell hex)
+(defspell storm-of-vengeance)
+(defspell weird)
+(defspell flaming-sphere)
+(defspell beast-bond)
+(defspell warding-bond)
+(defspell call-lightning)
+(defspell locate-animals-or-plants)
+(defspell reverse-gravity)
+(defspell shocking-grasp)
+(defspell drawmijs-instant-summons)
+(defspell resistance)
+(defspell spare-the-dying)
+(defspell hypnotic-pattern)
+(defspell aid)
+(defspell sanctuary)
+(defspell feeblemind)
+(defspell thunderwave)
+(defspell wall-of-force)
+(defspell sleep)
+(defspell nystuls-magic-aura)
+(defspell insect-plague)
+(defspell daylight)
+(defspell illusory-script)
+(defspell dispel-magic)
+(defspell vampiric-touch)
+(defspell hallow)
+(defspell disintegrate)
+(defspell conjure-celestial)
+(defspell frostbite)
+(defspell wall-of-water)
+(defspell animal-shapes)
+(defspell unseen-servant)
+(defspell comprehend-languages)
+(defspell forcecage)
+(defspell expeditious-retreat)
+(defspell power-word-kill)
+(defspell misty-step)
+(defspell enlarge-reduce)
+(defspell contingency)
+(defspell beacon-of-hope)
+(defspell witch-bolt)
+(defspell warding-wind)
+(defspell hold-person)
+(defspell gate)
+(defspell cloud-of-daggers)
+(defspell cone-of-cold)
+(defspell teleportation-circle)
+(defspell delayed-blast-fireball)
+(defspell earthbind)
+(defspell speak-with-plants)
+(defspell mass-suggestion)
+(defspell hallucinatory-terrain)
+(defspell regenerate)
+(defspell sequester)
+(defspell blindness-deafness)
+(defspell greater-invisibility)
+(defspell sunburst)
+(defspell gentle-repose)
+(defspell speak-with-animals)
+(defspell wall-of-sand)
+;(defspell symbol)
+(defspell dominate-person)
+;(defspell clone)
+(defspell wall-of-stone)
+(defspell catapult)
+(defspell stinking-cloud)
+(defspell mage-armor)
+(defspell heat-metal)
+(defspell magic-missile)
+(defspell protection-from-evil-and-good)
+(defspell banishing-smite)
+(defspell bless)
+(defspell water-walk)
+(defspell find-the-path)
+(defspell ray-of-sickness)
+(defspell lesser-restoration)
+(defspell etherealness)
+(defspell ottos-irresistible-dance)
+(defspell true-resurrection)
+(defspell remove-curse)
+(defspell enhance-ability)
+(defspell foresight)
+(defspell lightning-arrow)
+(defspell conjure-shadow-demon)
+(defspell grease)
+(defspell immolation)
+(defspell rarys-telepathic-bond)
+(defspell produce-flame)
+(defspell prismatic-wall)
+(defspell detect-poison-and-disease)
+(defspell goodberry)
+(defspell mordenkainens-private-sanctum)
+(defspell tashas-hideous-laughter)
+(defspell bestow-curse)
+(defspell dispel-evil-and-good)
+(defspell skywrite)
+(defspell locate-object)
+(defspell hellish-rebuke)
+(defspell heroism)
+(defspell earth-tremor)
+(defspell moonbeam)
+(defspell protection-from-energy)
+(defspell otilukes-resilient-sphere)
+(defspell flesh-to-stone)
+(defspell lightning-bolt)
+(defspell thunderous-smite)
+(defspell wall-of-fire)
+(defspell lightning-lure)
+(defspell destructive-wave)
+(defspell magic-weapon)
+(defspell create-or-destroy-water)
+(defspell tsunami)
+(defspell glibness)
+(defspell branding-smite)
+(defspell investiture-of-wind)
+(defspell arms-of-hadar)
+(defspell chain-lightning)
+(defspell swift-quiver)
+(defspell aura-of-vitality)
+(defspell protection-from-poison)
+(defspell silence)
+(defspell color-spray)
+(defspell vicious-mockery)
+(defspell banishment)
+(defspell evards-black-tentacles)
+(defspell control-winds)
+(defspell plant-growth)
+(defspell grasping-vine)
+(defspell fog-cloud)
+(defspell legend-lore)
+(defspell forbiddance)
+(defspell primordial-ward)
+(defspell shield-of-faith)
+(defspell ice-knife)
+(defspell harm)
+(defspell magic-mouth)
+(defspell darkvision)
+(defspell eyebite)
+(defspell create-food-and-water)
+(defspell antilife-shell)
+(defspell guardian-of-faith)
+(defspell scrying)
+(defspell message)
+(defspell guiding-bolt)
+(defspell pass-without-trace)
+(defspell word-of-recall)
+(defspell dust-devil)
+(defspell planar-ally)
+(defspell fire-shield)
+(defspell longstrider)
+(defspell compelled-duel)
+(defspell levitate)
+(defspell absorb-elements)
+(defspell flame-strike)
+(defspell locate-creature)
+(defspell leomunds-secret-chest)
+(defspell booming-blade)
+(defspell glyph-of-warding)
+(defspell commune-with-nature)
+(defspell fireball)
+(defspell fear)
+(defspell geas)
+(defspell suggestion)
+(defspell spirit-guardians)
+(defspell shatter)
+(defspell tree-stride)
+(defspell investiture-of-flame)
+(defspell divination)
+(defspell crusaders-mantle)
+(defspell conjure-animals)
+(defspell giant-insect)
+(defspell antimagic-field)
+(defspell incendiary-cloud)
+(defspell arcane-eye)
+(defspell identify)
+(defspell passwall)
+(defspell maze)
+(defspell sacred-flame)
+(defspell gust-of-wind)
+(defspell revivify)
+(defspell darkness)
+(defspell true-polymorph)
+(defspell hunger-of-hadar)
+(defspell mending)
+(defspell command)
+(defspell transport-via-plants)
+(defspell dancing-lights)
+(defspell true-seeing)
+(defspell maximilians-earthen-grasp)
+(defspell clairvoyance)
+(defspell knock)
+(defspell hold-monster)
+(defspell reincarnate)
+(defspell telekinesis)
+(defspell wish)
+(defspell alter-self)
+(defspell magic-stone)
+(defspell abi-dalzims-horrid-wilting)
+(defspell prayer-of-healing)
+(defspell teleport)
+(defspell conjure-volley)
+(defspell polymorph)
+(defspell heroes-feast)
+(defspell shapechange)
+(defspell maelstrom)
+(defspell find-familiar)
+(defspell conjure-woodland-beings)
+(defspell thunderclap)
+(defspell divine-word)
+(defspell tensers-floating-disk)
+(defspell antipathy-sympathy)
+(defspell move-earth)
+(defspell zone-of-truth)
+(defspell divine-favor)
+(defspell searing-smite)
+(defspell arcane-gate)
+(defspell cordon-of-arrows)
+(defspell feign-death)
+(defspell beast-sense)
+(defspell mordenkainens-faithful-hound)
+(defspell detect-magic)
+(defspell raise-dead)
+(defspell mass-cure-wounds)
+(defspell demiplane)
+(defspell snillocs-snowball-swarm)
+(defspell sending)
+(defspell greater-restoration)
+(defspell blade-ward)
+(defspell wind-wall)
+(defspell wrathful-smite)
+(defspell web)
+(defspell mordenkainens-magnificent-mansion)
+(defspell conjure-barlgura)
+(defspell contagion)
+(defspell contact-other-plane)
+(defspell staggering-smite)
+(defspell feather-fall)
+(defspell continual-flame)
+(defspell shield)
+(defspell elemental-bane)
+(defspell minor-illusion)
+(defspell dream)
+(defspell inflict-wounds)
+(defspell holy-aura)
+(defspell circle-of-death)
+(defspell aura-of-purity)
+(defspell awaken)
+(defspell tidal-wave)
+(defspell ray-of-enfeeblement)
+(defspell shillelagh)
+(defspell tongues)
+(defspell astral-projection)
+(defspell whirlwind)
+(defspell haste)
+(defspell dimension-door)
+(defspell light)
+(defspell fire-storm)
+(defspell permanent-image)
+(defspell faerie-fire)
+(defspell animate-dead)
+(defspell earthquake)
+(defspell mold-earth)
+(defspell pyrotechnics)
+(defspell mordenkainens-sword)
+(defspell guidance)
+(defspell phantom-steed)
+(defspell vitriolic-sphere)
+(defspell mirage-arcane)
+(defspell thaumaturgy)
+(defspell storm-sphere)
+(defspell dissonant-whispers)
+(defspell mind-blank)
+(defspell bigbys-hand)
+(defspell blur)
+(defspell resurrection)
+(defspell modify-memory)
+(defspell wall-of-thorns)
+(defspell find-traps)
+(defspell flame-blade)
+(defspell fabricate)
+(defspell animal-messenger)
+(defspell melfs-minute-meteors)
+(defspell ray-of-frost)
+(defspell bones-of-the-earth)
+(defspell mass-heal)
+(defspell barkskin)
+(defspell arcane-lock)
+(defspell healing-word)
+(defspell armor-of-agathys)
+(defspell enthrall)
+(defspell mislead)
+(defspell phantasmal-force)
+(defspell blight)
+(defspell stoneskin)
+(defspell spike-growth)
+(defspell mirror-image)
+(defspell true-strike)
+(defspell plane-shift)
+(defspell conjure-minor-elementals)
+(defspell control-water)
+(defspell acid-splash)
+(defspell hail-of-thorns)
+(defspell flame-arrows)
+(defspell conjure-vrock)
+(defspell planar-binding)
+(defspell sword-burst)
+(defspell animal-friendship)
+(defspell chill-touch)
+(defspell detect-thoughts)
+(defspell gaseous-form)
+(defspell imprisonment)
+(defspell silent-image)
+(defspell eldritch-blast)
+(defspell ice-storm)
+(defspell watery-sphere)
+(defspell sleet-storm)
+(defspell elemental-weapon)
+(defspell erupting-earth)
+(defspell blinding-smite)
+(defspell poison-spray)
+(defspell crown-of-madness)
+(defspell aganazzars-scorcher)
+(defspell alarm)
+(defspell detect-evil-and-good)
+(defspell circle-of-power)
+(defspell conjure-lesser-demon)
+(defspell meteor-swarm)
+(defspell green-flame-blade)
+(defspell calm-emotions)
+(defspell blade-barrier)
+(defspell investiture-of-ice)
+(defspell gust)
+(defspell druidcraft)
+(defspell cloudkill)
+(defspell commune)
+(defspell globe-of-invulnerability)
+(defspell prismatic-spray)
+(defspell wind-walk)
+(defspell spider-climb)
+(defspell entangle)
+(defspell purify-food-and-drink)
+(defspell fly)
+(defspell mass-healing-word)
+(defspell speak-with-dead)
+(defspell chromatic-orb)
+(defspell shape-water)
+(defspell otilukes-freezing-sphere)
+(defspell conjure-barrage)
+(defspell slow)
+(defspell seeming)
+(defspell telepathy)
+(defspell time-stop)
+(defspell sunbeam)
+(defspell dominate-monster)
+(defspell trap-the-soul)
+(defspell false-life)
+(defspell leomunds-tiny-hut)
+(defspell invisibility)
+(defspell transmute-rock)
+(defspell control-weather)
+(defspell create-undead)
+(defspell charm-person)
+(defspell create-bonfire)
+(defspell friends)
+(defspell investiture-of-stone)
+(defspell hunters-mark)
+(defspell death-ward)
+(defspell freedom-of-movement)
+(defspell water-breathing)
+(defspell wall-of-ice)
+(defspell blink)
+(defspell meld-into-stone)
+(defspell bane)
+(defspell melfs-acid-arrow)
+(defspell disguise-self)
+(defspell creation)
+(defspell scorching-ray)
+(defspell programmed-illusion)
+(defspell ensnaring-strike)
+(defspell confusion)
+(defspell nondetection)
+(defspell jump)
+(defspell major-image)
+(defspell control-flames)
+(defspell conjure-elemental)
+(defspell dominate-beast)
+(defspell counterspell)
+(defspell aura-of-life)
+(defspell thorn-whip)
+(defspell see-invisibility)
+(defspell conjure-hezrou)
+(defspell fire-bolt)
+(defspell magic-jar)
+(defspell power-word-stun)
+(defspell find-steed)
+(defspell spiritual-weapon)
+(defspell cure-wounds)
+(defspell mage-hand)
+(defspell power-word-heal)
+(defspell project-image)
+(defspell phantasmal-killer)
+(defspell heal)
+(defspell augury)
+(defspell rope-trick)
+(defspell finger-of-death)
+(defspell simulacrum)
+(defspell prestidigitation)
+(defspell conjure-fey)
+(defspell burning-hands)
+(defspell guards-and-wards)
+(defspell magic-circle)
+(defspell stone-shape)
+
+(def spells {:compulsion compulsion
+             :animate-objects animate-objects
+             :hex hex
+             :storm-of-vengeance storm-of-vengeance
+             :weird weird
+             :flaming-sphere flaming-sphere
+             :beast-bond beast-bond
+             :warding-bond warding-bond
+             :call-lightning call-lightning
+             :locate-animals-or-plants locate-animals-or-plants
+             :reverse-gravity reverse-gravity
+             :shocking-grasp shocking-grasp
+             :drawmijs-instant-summons drawmijs-instant-summons
+             :resistance resistance
+             :spare-the-dying spare-the-dying
+             :hypnotic-pattern hypnotic-pattern
+             :aid aid
+             :sanctuary sanctuary
+             :feeblemind feeblemind
+             :thunderwave thunderwave
+             :wall-of-force wall-of-force
+             :sleep sleep
+             :nystuls-magic-aura nystuls-magic-aura
+             :insect-plague insect-plague
+             :daylight daylight
+             :illusory-script illusory-script
+             :dispel-magic dispel-magic
+             :vampiric-touch vampiric-touch
+             :hallow hallow
+             :disintegrate disintegrate
+             :conjure-celestial conjure-celestial
+             :frostbite frostbite
+             :wall-of-water wall-of-water
+             :animal-shapes animal-shapes
+             :unseen-servant unseen-servant
+             :comprehend-languages comprehend-languages
+             :forcecage forcecage
+             :expeditious-retreat expeditious-retreat
+             :power-word-kill power-word-kill
+             :misty-step misty-step
+             :enlarge-reduce enlarge-reduce
+             :contingency contingency
+             :beacon-of-hope beacon-of-hope
+             :witch-bolt witch-bolt
+             :warding-wind warding-wind
+             :hold-person hold-person
+             :gate gate
+             :cloud-of-daggers cloud-of-daggers
+             :cone-of-cold cone-of-cold
+             :teleportation-circle teleportation-circle
+             :delayed-blast-fireball delayed-blast-fireball
+             :earthbind earthbind
+             :speak-with-plants speak-with-plants
+             :mass-suggestion mass-suggestion
+             :hallucinatory-terrain hallucinatory-terrain
+             :regenerate regenerate
+             :sequester sequester
+             :blindness-deafness blindness-deafness
+             :greater-invisibility greater-invisibility
+             :sunburst sunburst
+             :gentle-repose gentle-repose
+             :speak-with-animals speak-with-animals
+             :wall-of-sand wall-of-sand
+             ;:symbol symbol
+             :dominate-person dominate-person
+             ;:clone clone
+             :wall-of-stone wall-of-stone
+             :catapult catapult
+             :stinking-cloud stinking-cloud
+             :mage-armor mage-armor
+             :heat-metal heat-metal
+             :magic-missile magic-missile
+             :protection-from-evil-and-good protection-from-evil-and-good
+             :banishing-smite banishing-smite
+             :bless bless
+             :water-walk water-walk
+             :find-the-path find-the-path
+             :ray-of-sickness ray-of-sickness
+             :lesser-restoration lesser-restoration
+             :etherealness etherealness
+             :ottos-irresistible-dance ottos-irresistible-dance
+             :true-resurrection true-resurrection
+             :remove-curse remove-curse
+             :enhance-ability enhance-ability
+             :foresight foresight
+             :lightning-arrow lightning-arrow
+             :conjure-shadow-demon conjure-shadow-demon
+             :grease grease
+             :immolation immolation
+             :rarys-telepathic-bond rarys-telepathic-bond
+             :produce-flame produce-flame
+             :prismatic-wall prismatic-wall
+             :detect-poison-and-disease detect-poison-and-disease
+             :goodberry goodberry
+             :mordenkainens-private-sanctum mordenkainens-private-sanctum
+             :tashas-hideous-laughter tashas-hideous-laughter
+             :bestow-curse bestow-curse
+             :dispel-evil-and-good dispel-evil-and-good
+             :skywrite skywrite
+             :locate-object locate-object
+             :hellish-rebuke hellish-rebuke
+             :heroism heroism
+             :earth-tremor earth-tremor
+             :moonbeam moonbeam
+             :protection-from-energy protection-from-energy
+             :otilukes-resilient-sphere otilukes-resilient-sphere
+             :flesh-to-stone flesh-to-stone
+             :lightning-bolt lightning-bolt
+             :thunderous-smite thunderous-smite
+             :wall-of-fire wall-of-fire
+             :lightning-lure lightning-lure
+             :destructive-wave destructive-wave
+             :magic-weapon magic-weapon
+             :create-or-destroy-water create-or-destroy-water
+             :tsunami tsunami
+             :glibness glibness
+             :branding-smite branding-smite
+             :investiture-of-wind investiture-of-wind
+             :arms-of-hadar arms-of-hadar
+             :chain-lightning chain-lightning
+             :swift-quiver swift-quiver
+             :aura-of-vitality aura-of-vitality
+             :protection-from-poison protection-from-poison
+             :silence silence
+             :color-spray color-spray
+             :vicious-mockery vicious-mockery
+             :banishment banishment
+             :evards-black-tentacles evards-black-tentacles
+             :control-winds control-winds
+             :plant-growth plant-growth
+             :grasping-vine grasping-vine
+             :fog-cloud fog-cloud
+             :legend-lore legend-lore
+             :forbiddance forbiddance
+             :primordial-ward primordial-ward
+             :shield-of-faith shield-of-faith
+             :ice-knife ice-knife
+             :harm harm
+             :magic-mouth magic-mouth
+             :darkvision darkvision
+             :eyebite eyebite
+             :create-food-and-water create-food-and-water
+             :antilife-shell antilife-shell
+             :guardian-of-faith guardian-of-faith
+             :scrying scrying
+             :message message
+             :guiding-bolt guiding-bolt
+             :pass-without-trace pass-without-trace
+             :word-of-recall word-of-recall
+             :dust-devil dust-devil
+             :planar-ally planar-ally
+             :fire-shield fire-shield
+             :longstrider longstrider
+             :compelled-duel compelled-duel
+             :levitate levitate
+             :absorb-elements absorb-elements
+             :flame-strike flame-strike
+             :locate-creature locate-creature
+             :leomunds-secret-chest leomunds-secret-chest
+             :booming-blade booming-blade
+             :glyph-of-warding glyph-of-warding
+             :commune-with-nature commune-with-nature
+             :fireball fireball
+             :fear fear
+             :geas geas
+             :suggestion suggestion
+             :spirit-guardians spirit-guardians
+             :shatter shatter
+             :tree-stride tree-stride
+             :investiture-of-flame investiture-of-flame
+             :divination divination
+             :crusaders-mantle crusaders-mantle
+             :conjure-animals conjure-animals
+             :giant-insect giant-insect
+             :antimagic-field antimagic-field
+             :incendiary-cloud incendiary-cloud
+             :arcane-eye arcane-eye
+             :identify identify
+             :passwall passwall
+             :maze maze
+             :sacred-flame sacred-flame
+             :gust-of-wind gust-of-wind
+             :revivify revivify
+             :darkness darkness
+             :true-polymorph true-polymorph
+             :hunger-of-hadar hunger-of-hadar
+             :mending mending
+             :command command
+             :transport-via-plants transport-via-plants
+             :dancing-lights dancing-lights
+             :true-seeing true-seeing
+             :maximilians-earthen-grasp maximilians-earthen-grasp
+             :clairvoyance clairvoyance
+             :knock knock
+             :hold-monster hold-monster
+             :reincarnate reincarnate
+             :telekinesis telekinesis
+             :wish wish
+             :alter-self alter-self
+             :magic-stone magic-stone
+             :abi-dalzims-horrid-wilting abi-dalzims-horrid-wilting
+             :prayer-of-healing prayer-of-healing
+             :teleport teleport
+             :conjure-volley conjure-volley
+             :polymorph polymorph
+             :heroes-feast heroes-feast
+             :shapechange shapechange
+             :maelstrom maelstrom
+             :find-familiar find-familiar
+             :conjure-woodland-beings conjure-woodland-beings
+             :thunderclap thunderclap
+             :divine-word divine-word
+             :tensers-floating-disk tensers-floating-disk
+             :antipathy-sympathy antipathy-sympathy
+             :move-earth move-earth
+             :zone-of-truth zone-of-truth
+             :divine-favor divine-favor
+             :searing-smite searing-smite
+             :arcane-gate arcane-gate
+             :cordon-of-arrows cordon-of-arrows
+             :feign-death feign-death
+             :beast-sense beast-sense
+             :mordenkainens-faithful-hound mordenkainens-faithful-hound
+             :detect-magic detect-magic
+             :raise-dead raise-dead
+             :mass-cure-wounds mass-cure-wounds
+             :demiplane demiplane
+             :snillocs-snowball-swarm snillocs-snowball-swarm
+             :sending sending
+             :greater-restoration greater-restoration
+             :blade-ward blade-ward
+             :wind-wall wind-wall
+             :wrathful-smite wrathful-smite
+             :web web
+             :mordenkainens-magnificent-mansion mordenkainens-magnificent-mansion
+             :conjure-barlgura conjure-barlgura
+             :contagion contagion
+             :contact-other-plane contact-other-plane
+             :staggering-smite staggering-smite
+             :feather-fall feather-fall
+             :continual-flame continual-flame
+             :shield shield
+             :elemental-bane elemental-bane
+             :minor-illusion minor-illusion
+             :dream dream
+             :inflict-wounds inflict-wounds
+             :holy-aura holy-aura
+             :circle-of-death circle-of-death
+             :aura-of-purity aura-of-purity
+             :awaken awaken
+             :tidal-wave tidal-wave
+             :ray-of-enfeeblement ray-of-enfeeblement
+             :shillelagh shillelagh
+             :tongues tongues
+             :astral-projection astral-projection
+             :whirlwind whirlwind
+             :haste haste
+             :dimension-door dimension-door
+             :light light
+             :fire-storm fire-storm
+             :permanent-image permanent-image
+             :faerie-fire faerie-fire
+             :animate-dead animate-dead
+             :earthquake earthquake
+             :mold-earth mold-earth
+             :pyrotechnics pyrotechnics
+             :mordenkainens-sword mordenkainens-sword
+             :guidance guidance
+             :phantom-steed phantom-steed
+             :vitriolic-sphere vitriolic-sphere
+             :mirage-arcane mirage-arcane
+             :thaumaturgy thaumaturgy
+             :storm-sphere storm-sphere
+             :dissonant-whispers dissonant-whispers
+             :mind-blank mind-blank
+             :bigbys-hand bigbys-hand
+             :blur blur
+             :resurrection resurrection
+             :modify-memory modify-memory
+             :wall-of-thorns wall-of-thorns
+             :find-traps find-traps
+             :flame-blade flame-blade
+             :fabricate fabricate
+             :animal-messenger animal-messenger
+             :melfs-minute-meteors melfs-minute-meteors
+             :ray-of-frost ray-of-frost
+             :bones-of-the-earth bones-of-the-earth
+             :mass-heal mass-heal
+             :barkskin barkskin
+             :arcane-lock arcane-lock
+             :healing-word healing-word
+             :armor-of-agathys armor-of-agathys
+             :enthrall enthrall
+             :mislead mislead
+             :phantasmal-force phantasmal-force
+             :blight blight
+             :stoneskin stoneskin
+             :spike-growth spike-growth
+             :mirror-image mirror-image
+             :true-strike true-strike
+             :plane-shift plane-shift
+             :conjure-minor-elementals conjure-minor-elementals
+             :control-water control-water
+             :acid-splash acid-splash
+             :hail-of-thorns hail-of-thorns
+             :flame-arrows flame-arrows
+             :conjure-vrock conjure-vrock
+             :planar-binding planar-binding
+             :sword-burst sword-burst
+             :animal-friendship animal-friendship
+             :chill-touch chill-touch
+             :detect-thoughts detect-thoughts
+             :gaseous-form gaseous-form
+             :imprisonment imprisonment
+             :silent-image silent-image
+             :eldritch-blast eldritch-blast
+             :ice-storm ice-storm
+             :watery-sphere watery-sphere
+             :sleet-storm sleet-storm
+             :elemental-weapon elemental-weapon
+             :erupting-earth erupting-earth
+             :blinding-smite blinding-smite
+             :poison-spray poison-spray
+             :crown-of-madness crown-of-madness
+             :aganazzars-scorcher aganazzars-scorcher
+             :alarm alarm
+             :detect-evil-and-good detect-evil-and-good
+             :circle-of-power circle-of-power
+             :conjure-lesser-demon conjure-lesser-demon
+             :meteor-swarm meteor-swarm
+             :green-flame-blade green-flame-blade
+             :calm-emotions calm-emotions
+             :blade-barrier blade-barrier
+             :investiture-of-ice investiture-of-ice
+             :gust gust
+             :druidcraft druidcraft
+             :cloudkill cloudkill
+             :commune commune
+             :globe-of-invulnerability globe-of-invulnerability
+             :prismatic-spray prismatic-spray
+             :wind-walk wind-walk
+             :spider-climb spider-climb
+             :entangle entangle
+             :purify-food-and-drink purify-food-and-drink
+             :fly fly
+             :mass-healing-word mass-healing-word
+             :speak-with-dead speak-with-dead
+             :chromatic-orb chromatic-orb
+             :shape-water shape-water
+             :otilukes-freezing-sphere otilukes-freezing-sphere
+             :conjure-barrage conjure-barrage
+             :slow slow
+             :seeming seeming
+             :telepathy telepathy
+             :time-stop time-stop
+             :sunbeam sunbeam
+             :dominate-monster dominate-monster
+             :trap-the-soul trap-the-soul
+             :false-life false-life
+             :leomunds-tiny-hut leomunds-tiny-hut
+             :invisibility invisibility
+             :transmute-rock transmute-rock
+             :control-weather control-weather
+             :create-undead create-undead
+             :charm-person charm-person
+             :create-bonfire create-bonfire
+             :friends friends
+             :investiture-of-stone investiture-of-stone
+             :hunters-mark hunters-mark
+             :death-ward death-ward
+             :freedom-of-movement freedom-of-movement
+             :water-breathing water-breathing
+             :wall-of-ice wall-of-ice
+             :blink blink
+             :meld-into-stone meld-into-stone
+             :bane bane
+             :melfs-acid-arrow melfs-acid-arrow
+             :disguise-self disguise-self
+             :creation creation
+             :scorching-ray scorching-ray
+             :programmed-illusion programmed-illusion
+             :ensnaring-strike ensnaring-strike
+             :confusion confusion
+             :nondetection nondetection
+             :jump jump
+             :major-image major-image
+             :control-flames control-flames
+             :conjure-elemental conjure-elemental
+             :dominate-beast dominate-beast
+             :counterspell counterspell
+             :aura-of-life aura-of-life
+             :thorn-whip thorn-whip
+             :see-invisibility see-invisibility
+             :conjure-hezrou conjure-hezrou
+             :fire-bolt fire-bolt
+             :magic-jar magic-jar
+             :power-word-stun power-word-stun
+             :find-steed find-steed
+             :spiritual-weapon spiritual-weapon
+             :cure-wounds cure-wounds
+             :mage-hand mage-hand
+             :power-word-heal power-word-heal
+             :project-image project-image
+             :phantasmal-killer phantasmal-killer
+             :heal heal
+             :augury augury
+             :rope-trick rope-trick
+             :finger-of-death finger-of-death
+             :simulacrum simulacrum
+             :prestidigitation prestidigitation
+             :conjure-fey conjure-fey
+             :burning-hands burning-hands
+             :guards-and-wards guards-and-wards
+             :magic-circle magic-circle
+             :stone-shape stone-shape})

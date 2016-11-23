@@ -1,36 +1,19 @@
 (ns illithid.db
-  (:require [clojure.spec :as s :include-macros true]
-            [illithid.character.core :as c]
-            [illithid.spec :refer-macros [set-of]]))
+  (:require [clojure.spec :as s]))
 
-(s/def ::state keyword?)
-(defmulti state ::state)
+(s/def ::index integer?)
+(s/def ::key keyword?)
+(s/def ::title string?)
 
-(defmethod state ::welcome [_] (s/keys))
+(s/def ::route (s/keys :req-un [::key ::title]))
+(s/def ::routes (s/* ::route))
 
-(s/def ::new-character-page #{:basic-info
-                              :abilities
-                              :proficiencies})
-(s/def ::previous-page ::new-character-page)
+(s/def ::nav (s/keys :req-un [::index ::key ::routes]))
 
-(s/def ::new-character
-  (s/keys :req [::new-character-page]
-          :opt [::c/name ::c/class ::c/race ::c/abilities
-                ::c/skill-proficiencies
-                ::previous-page]))
+(s/def ::app-db (s/keys :req-un [::nav]))
 
-(defmethod state ::new-character [_] (s/keys :req [::new-character]))
+;; initial state of app db
 
-(s/def ::character ::c/character)
-(defmethod state ::view-character [_] (s/keys :req [::character]))
-
-(s/def ::last-character-id (s/and int? (complement neg?)))
-(s/def ::character-ids (set-of ::c/id))
-
-(s/def ::db (s/merge (s/multi-spec state ::state)
-                     (s/keys :opt [::last-character-id
-                                   ::character-ids])))
-
-;; initial state of app-db
-(def app-db {::state ::welcome})
-
+(def app-db {:nav {:index  0
+                   :routes [{:key :home
+                             :title "Home"}]}})
