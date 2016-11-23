@@ -27,15 +27,27 @@
      :load-storage {:key :character-ids
                     :or #{}
                     :into ::db/character-ids
-                    :then-dispatch [::character-ids-loaded]}}))
+                    :then-dispatch [::populate-last-character-id]}}))
 
-(reg-event-db
-  ::character-ids-loaded
+(reg-event-fx
+  ::populate-last-character-id
   middleware
-  (fn [{::db/keys [character-ids] :as db} _]
-    (assoc db ::db/last-character-id
-           (apply max
-                  (or (seq (map (comp js/parseInt name) character-ids)) [0])))))
+  (fn [{{::db/keys [character-ids] :as db} :db} _]
+    {:db (assoc db ::db/last-character-id
+                (apply max (or (seq (map (comp js/parseInt #(subs % 1) name)
+                                         character-ids))
+                               [0])))
+     :dispatch [::load-characters]}))
+
+(reg-event-fx
+  ::load-characters
+  middleware
+  (fn [{{::db/keys [character-ids] :as db} :db}]
+    {:db db
+     :load-storage-n
+     (for [character-id character-ids]
+       {:key character-id
+        :into [::db/characters character-id]})}))
 
 (reg-event-db
   ::create-character

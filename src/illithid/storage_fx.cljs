@@ -11,18 +11,23 @@
       {:db (assoc-in db (if (coll? db-key) db-key [db-key]) storage-value)}
       next-ev (assoc :dispatch next-ev))))
 
-(reg-fx
-  :load-storage
-  (fn [{storage-key :key
-        default-value :or
-        db-key :into
-        next-ev :then-dispatch}]
-    (go (let [[error value] (<! (get-item storage-key))]
-          (if error
-            (throw error)
-            (dispatch [::storage-loaded {:db-key db-key
-                                         :storage-value (or value default-value)
-                                         :next-ev next-ev}]))))))
+(letfn
+  [(load-storage-n [storage-specs]
+     (go
+       (doseq [{storage-key :key
+                default-value :or
+                db-key :into
+                next-ev :then-dispatch} storage-specs]
+         (let [[error value] (<! (get-item storage-key))]
+           (if error
+             (throw error)
+             (dispatch [::storage-loaded
+                        {:db-key db-key
+                         :storage-value (or value default-value)
+                         :next-ev next-ev}]))))))]
+
+  (reg-fx :load-storage (comp load-storage-n vector))
+  (reg-fx :load-storage-n load-storage-n))
 
 (reg-fx
   :set-storage

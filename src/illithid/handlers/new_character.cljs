@@ -13,7 +13,7 @@
 (defn- gen-character-id [{old-id ::db/last-character-id :as db}]
   (let [new-id (inc old-id)]
     [(assoc db ::db/last-character-id new-id)
-     (keyword "illithid.character" (str new-id))]))
+     (keyword "illithid.character" (str "c" new-id))]))
 
 ;; Save the new character to ::db/character
 (reg-event-fx

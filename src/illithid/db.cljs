@@ -27,9 +27,12 @@
 (s/def ::last-character-id (s/and int? (complement neg?)))
 (s/def ::character-ids (set-of ::c/id))
 
+(s/def ::characters (s/map-of ::c/id ::c/character))
+
 (s/def ::db (s/merge (s/multi-spec state ::state)
                      (s/keys :opt [::last-character-id
-                                   ::character-ids])))
+                                   ::character-ids
+                                   ::characters])))
 
 ;; initial state of app-db
 (def app-db {::state ::welcome})
