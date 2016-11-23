@@ -11,11 +11,10 @@
     "start": "node ./node_modules/.bin/react-native start"
   },
   "dependencies": {
-    "react": "^0.14.8",
-    "react-native": "0.23.1"
+    "react": "^15.4.1",
+    "react-native": "0.38.0"
   },
   "devDependencies": {
-    "re-natal": "^0.3.1",
-    "react-native-cli": "^1.2.0"
+    "re-natal": "^0.3.2"
   }
 }
