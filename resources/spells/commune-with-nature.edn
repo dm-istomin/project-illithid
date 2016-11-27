@@ -1,1 +1,15 @@
-{:illithid.character.spell/material-component nil, :illithid.character.spell/level 5, :illithid.character.spell/name "Commune with Nature", :illithid.character.spell/components #{:V :S}, :illithid.character.spell/casting_time "1 minute", :illithid.character.spell/ritual true, :illithid.character.spell/duration nil, :illithid.character.spell/classes #{:druid :ranger :ritual caster :paladin}, :illithid.character.spell/description "<p>You briefly become one with nature and gain knowledge of the surrounding territory. In the outdoors, the spell gives you knowledge of the land within 3 miles of you. In caves and other natural underground settings, the radius is limited to 300 feet. The spell doesn’t function where nature has been replaced by construction, such as in dungeons and towns.</p><p> You instantly gain knowledge of up to three facts of your choice about any of the following subjects as they relate to the area:</p><p>- terrain and bodies of water</p><p>- prevalent plants, minerals, animals, or peoples</p><p>- powerful celestials, fey, fiends, elementals, or undead</p><p>- influence from other planes of existence</p><p>- buildings</p><p>For example, you could determine the location of powerful undead in the area, the location of major sources of safe drinking water, and the location of any nearby towns.</p>", :id :commune-with-nature, :illithid.character.spell/range "Self", :illithid.character.spell/school :school/divination}
+{:illithid.character.spell/material-component nil, :illithid.character.spell/level 5, :illithid.character.spell/name"Commune with Nature", :illithid.character.spell/components #{:V :S}, :illithid.character.spell/casting_time"1 minute", :illithid.character.spell/ritual true, :illithid.character.spell/duration nil, :illithid.character.spell/classes #{:druid :ranger :ritual-caster :paladin}, :illithid.character.spell/description"You briefly become one with nature and gain knowledge of the surrounding territory. In the outdoors, the spell gives you knowledge of the land within 3 miles of you. In caves and other natural underground settings, the radius is limited to 300 feet. The spell doesn’t function where nature has been replaced by construction, such as in dungeons and towns.
+
+ You instantly gain knowledge of up to three facts of your choice about any of the following subjects as they relate to the area:
+
+- terrain and bodies of water
+
+- prevalent plants, minerals, animals, or peoples
+
+- powerful celestials, fey, fiends, elementals, or undead
+
+- influence from other planes of existence
+
+- buildings
+
+For example, you could determine the location of powerful undead in the area, the location of major sources of safe drinking water, and the location of any nearby towns.", :id :commune-with-nature, :illithid.character.spell/range"Self", :illithid.character.spell/school :school/divination}
