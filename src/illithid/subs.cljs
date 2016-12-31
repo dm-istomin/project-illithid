@@ -1,6 +1,6 @@
 (ns illithid.subs
   (:require-macros [reagent.ratom :refer [reaction]])
-  (:require [re-frame.core :refer [reg-sub]]
-            [illithid.db :as db]))
+  (:require [re-frame.core :refer [reg-sub subscribe]]))
 
-(reg-sub ::state (fn [db _] (::db/state db)))
+(reg-sub :nav/index (fn [db _] (get-in db [:nav :index])))
+(reg-sub :nav/state (fn [db _] (:nav db)))
