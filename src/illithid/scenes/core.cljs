@@ -18,6 +18,9 @@
      [button {:text "Spell List"
               :on-press #(dispatch [:nav/push {:key :spell-list
                                               :title "Spell List"}])}]
+     [button {:text "Character Creation Demo"
+              :on-press #(dispatch [:nav/push {:key :character-creation-demo
+                                              :title "Character Creation"}])}]
      [button {:text "Ability Detail View"
               :on-press #(dispatch [:nav/push
                                     {:key :ability-detail-demo
@@ -57,10 +60,17 @@
                    :casting-time (aget params "spell-data" "casting_time")})
   (spell-detail spell-data))
 
+(defn character-creation-demo [params]
+  [view
+   [card
+    [card-body
+      [text "This is a the character creation demo"]]]])
+
 (def routes
   {:home home
    :another-scene another-scene
    :ability-detail-demo ability-detail-demo
    :spell-detail spell-detail-scene
-   :spell-list spell-list-scene})
+   :spell-list spell-list-scene
+   :character-creation-demo character-creation-demo})
 
