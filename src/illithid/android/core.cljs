@@ -4,13 +4,15 @@
             [illithid.handlers]
             [illithid.subs]
             [illithid.scenes.core :as s]
+            [illithid.scenes.not-found :refer [not-found]]
             [illithid.components.ui :refer [toolbar]]))
 
 (def react-native (js/require "react-native"))
 
 (def app-registry (.-AppRegistry react-native))
 (def view (r/adapt-react-class (.-View react-native)))
-(def card-stack (r/adapt-react-class (.-CardStack (.-NavigationExperimental react-native))))
+(def card-stack (r/adapt-react-class
+                  (-> react-native .-NavigationExperimental .-CardStack)))
 
 (def style
   {:view {:flex-direction "column"
@@ -37,8 +39,10 @@
   (let [route (aget props "scene" "route" "key")
         title (aget props "scene" "route" "title")
         params (aget props "scene" "route" "params")]
-     [view (style :view)
-      ((s/routes (keyword route)) params)]))
+     [view (:view style)
+      (if-let [route-view (get s/routes (keyword route))]
+        [route-view params]
+        [not-found])]))
 
 (defn app-root []
   (let [nav (subscribe [:nav/state])]
@@ -46,7 +50,7 @@
       [card-stack {:on-navigate-back #(dispatch [:nav/pop nil])
                    :render-header    #(r/as-element (header %))
                    :navigation-state @nav
-                   :style            (style :card-stack)
+                   :style            (:card-stack style)
                    :render-scene     #(r/as-element (scene %))}])))
 
 (defn init []

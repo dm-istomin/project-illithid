@@ -47,6 +47,11 @@
 (def middleware [h/middleware (path ::db/new-character)])
 
 (reg-event-db
+  ::initialize
+  middleware
+  (fn [db _] {}))
+
+(reg-event-db
   ::set-page
   middleware
   (fn [db [_ new-page]]

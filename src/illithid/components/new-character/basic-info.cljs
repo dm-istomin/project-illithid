@@ -1,7 +1,5 @@
 (ns illithid.components.new-character.basic-info
-  (:refer-clojure :exclude [atom])
-  (:require [reagent.core :as r :refer [atom]]
-            [re-frame.core :refer [subscribe dispatch]]
+  (:require [re-frame.core :refer [subscribe dispatch]]
             [illithid.character.race :as race]
             [illithid.character.cclass :as cclass]
             [illithid.character.races :refer [races]]
@@ -13,7 +11,7 @@
              :refer [view text text-input touchable-highlight]]
             [illithid.components.picker :refer [picker]]))
 
-(defmethod render-page :basic-info []
+(defn basic-info []
   (let [character-name (subscribe [::sub/name])
         character-race (subscribe [::sub/race])
         character-class (subscribe [::sub/class])]
