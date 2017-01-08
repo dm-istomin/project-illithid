@@ -19,13 +19,19 @@
 
 ;;;
 
-(reg-event-db
-  :nav/push-raw
-  middleware
-  (fn [db [_ value]]
-    (-> db
-        (update-in [::db/nav :index] inc)
-        (update-in [::db/nav :routes] #(conj % value)))))
+(defn push-raw
+  [{{:keys [routes]} ::db/nav :as db} [_ {route-key :key :as route}]]
+  (let [matches-route (comp #{route-key} :key)]
+    (if (some matches-route routes)
+      ;; If the route already exists, remove it from the stack and add it to
+      ;; the beginning
+      (update-in db [::db/nav :routes]
+                 #(-> % (->> (remove matches-route)) (conj route)))
+      ;; Otherwise, just push the route to the stack
+      (-> db
+          (update-in [::db/nav :index] inc)
+          (update-in [::db/nav :routes] conj route)))))
+(reg-event-db :nav/push-raw middleware push-raw)
 
 (reg-event-fx
   :nav/push
