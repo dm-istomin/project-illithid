@@ -54,24 +54,13 @@
                       ::db/character-ids all-character-ids))
        :set-storage-n [{:key character-id, :value chr}
                        {:key :character-ids, :value all-character-ids}]
-       :dispatch [:nav/push {:key :characters-index
-                             :title "Characters"}]})))
+       :dispatch [:nav/push :characters-index]})))
 
 (def middleware [h/middleware (path ::db/new-character)])
 
-(def titles {:characters-new-basic-info "Basic Info"
-             :characters-new-abilities "Abilities"
-             :characters-new-proficiencies "Proficiencies"})
 (def routes [:characters-new-basic-info
              :characters-new-abilities
              :characters-new-proficiencies])
-
-(defn page [route-key]
-  (assert (some #{route-key} routes))
-  {:key route-key
-   :title (str "New Character - " (titles route-key))})
-
-(assert (= (set (keys titles)) (set routes)))
 
 (reg-event-fx
   ::next-page
@@ -89,7 +78,7 @@
              (assoc-in db [::db/new-character ::c/skill-proficiencies] #{})
 
              db)
-       :dispatch [:nav/push (page new-page)]})))
+       :dispatch [:nav/push new-page]})))
 
 (reg-event-db
   ::set-name

@@ -29,7 +29,6 @@
   [ripple {:key (:name spell)
            :style (:view style)
            :on-press #(dispatch [:nav/push {:key :spell-detail
-                                            :title "Spell Detail"
                                             :params {:spell-data spell}}])}
    [image {:style (:img style) :source logo-img}]
    [view {:style {:flex-direction "column"}}
