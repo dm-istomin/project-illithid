@@ -3,7 +3,6 @@
             [illithid.character.ability :as a]
             [illithid.subs.new-character :as sub]
             [illithid.handlers.new-character :as pub]
-            [illithid.components.new-character.core :refer [render-page]]
             [illithid.components.native
              :refer [view text text-input touchable-highlight]]))
 
@@ -41,13 +40,10 @@
           :style ability-button-styles}
          [text {:style {:text-align "center"}} "-"]]]])))
 
-(defmethod render-page :abilities []
+(defn abilities []
   [view {:style {:flex-direction "column"
                  :margin 20
                  :align-items "stretch"}}
    (doall (for [ability a/abilities]
-            ^{:key ability} [ability-input ability]))
-   [touchable-highlight
-    {:on-press #(dispatch [::pub/set-page :proficiencies])}
-    [text "Next"]]])
+            ^{:key ability} [ability-input ability]))])
 

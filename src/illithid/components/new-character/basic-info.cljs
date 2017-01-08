@@ -40,6 +40,4 @@
                 :id-fn ::cclass/id
                 :display-fn ::cclass/name
                 :value (::cclass/id @character-class)
-                :on-change #(dispatch [::pub/set-class %])}]
-       [touchable-highlight {:on-press #(dispatch [::pub/set-page :abilities])}
-        [text "Next"]]])))
+                :on-change #(dispatch [::pub/set-class %])}]])))
