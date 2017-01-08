@@ -1,5 +1,6 @@
 (ns illithid.components.new-character.basic-info
-  (:require [re-frame.core :refer [subscribe dispatch]]
+  (:require [reagent.core :as reagent]
+            [re-frame.core :refer [subscribe dispatch dispatch-sync]]
             [illithid.character.race :as race]
             [illithid.character.cclass :as cclass]
             [illithid.character.races :refer [races]]
@@ -21,7 +22,9 @@
        [text-input
         {:placeholder "Gundrik Bjornsson"
          :value @character-name
-         :on-change-text #(dispatch [::pub/set-name %])
+         :on-change-text (fn [text]
+                           (dispatch-sync [::pub/set-name text])
+                           (reagent/flush))
          :auto-capitalize "words"}]
 
        [text "Race"]
