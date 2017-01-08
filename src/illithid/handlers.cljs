@@ -8,7 +8,7 @@
 (defn validate-schema!
   "Throw an exception if db doesn't match the schema."
   [db]
-  (when-not (s/valid? ::db/app-db db)
+  (when (and db (not (s/valid? ::db/app-db db)))
     (throw (js/Error. (str "schema check failed: "
                            (s/explain-str ::db/app-db db))))))
 

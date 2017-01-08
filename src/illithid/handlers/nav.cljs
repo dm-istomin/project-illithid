@@ -42,8 +42,7 @@
             (map? route) (update route :title
                                  #(or % (title-for (:key route))))
             (keyword? route) {:key route, :title (title-for route)})]
-      {:db db
-       :dispatch [:nav/push-raw raw-route]})))
+      {:dispatch [:nav/push-raw raw-route]})))
 
 (reg-event-db
   :nav/pop
