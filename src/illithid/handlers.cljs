@@ -1,7 +1,8 @@
 (ns illithid.handlers
-  (:require [re-frame.core :refer [reg-event-db after debug]]
+  (:require [re-frame.core :refer [reg-event-db reg-event-fx after debug]]
             [clojure.spec :as s]
-            [illithid.db :as db]))
+            [illithid.db :as db]
+            [illithid.storage-fx]))
 ;;;
 
 (defn validate-schema!
@@ -15,7 +16,20 @@
 
 ;;;
 
-(reg-event-db
+(reg-event-fx
   :initialize-db
   middleware
-  (constantly db/initial))
+  (fn [_ _]
+    {:db db/initial
+     :load-storage {:key :character-ids
+                    :or #{}
+                    :into ::db/character-ids
+                    :then-dispatch [::character-ids-loaded]}}))
+
+(reg-event-db
+  ::character-ids-loaded
+  middleware
+  (fn [{::db/keys [character-ids] :as db} _]
+    (assoc db ::db/last-character-id
+           (apply max
+                  (or (seq (map (comp js/parseInt name) character-ids)) [0])))))

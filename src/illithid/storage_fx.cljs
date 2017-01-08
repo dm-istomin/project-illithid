@@ -2,7 +2,7 @@
   (:require [cljs.core.async :refer [<!]]
             [re-frame.core :refer [reg-fx reg-event-fx dispatch]]
             [glittershark.core-async-storage :refer [get-item set-item]])
-  (:require-macros [cljs.core.async.macros :as asyncm :refer [go]]))
+  (:require-macros [cljs.core.async.macros :refer [go]]))
 
 (reg-event-fx
   ::storage-loaded
