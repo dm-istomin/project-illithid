@@ -25,6 +25,8 @@
 
    :characters-index character-index
    :characters-new-basic-info new-character/basic-info
+   :characters-new-abilities new-character/abilities
+   :characters-new-proficiencies new-character/proficiencies
 
    :spell-detail spell-detail-scene
    :spell-list spell-list-scene})

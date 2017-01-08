@@ -42,6 +42,7 @@
                                        ::character-ids])))
 
 (def initial
-  {::nav {:index  0
+  {::state ::home
+   ::nav {:index  0
           :routes [{:key :home
                     :title "Home"}]}})

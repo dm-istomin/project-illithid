@@ -1,5 +1,6 @@
 (ns illithid.handlers.new-character
   (:require [re-frame.core :refer [reg-event-db reg-event-fx path]]
+            [illithid.lib.core :refer [element-after]]
             [illithid.storage-fx]
             [illithid.db :as db]
             [illithid.character.core :as c]
@@ -8,6 +9,13 @@
             [illithid.character.races :refer [races]]
             [illithid.character.classes :refer [classes]]
             [illithid.handlers :as h]))
+
+(reg-event-db
+  ::initialize
+  h/middleware
+  (fn [db _] (assoc db
+                    ::db/new-character {}
+                    ::db/state ::db/new-character)))
 
 ;; db -> [db character-id]
 (defn- gen-character-id [{old-id ::db/last-character-id :as db}]
@@ -24,7 +32,7 @@
           saving-throw-proficiencies (-> new-character
                                          ::c/class
                                          ::cl/saving-throw-proficiencies)
-          all-character-ids (conj (::db/character-ids db) character-id)
+          all-character-ids (conj (::db/character-ids db #{}) character-id)
           chr
           (-> new-character
               (select-keys
@@ -46,24 +54,37 @@
 
 (def middleware [h/middleware (path ::db/new-character)])
 
-(reg-event-db
-  ::initialize
-  middleware
-  (fn [db _] {}))
+(def titles {:characters-new-basic-info "Basic Info"
+             :characters-new-abilities "Abilities"
+             :characters-new-proficiencies "Proficiencies"})
+(def routes [:characters-new-basic-info
+             :characters-new-abilities
+             :characters-new-proficiencies])
 
-(reg-event-db
-  ::set-page
-  middleware
-  (fn [db [_ new-page]]
-    (cond-> db
-      true
-      (assoc ::db/new-character-page new-page
-             ::db/previous-page (::db/new-character-page db))
-      (= new-page :abilities)
-      (assoc ::c/abilities
-             (into {} (for [ability a/abilities] [ability 10])))
-      (= new-page :proficiencies)
-      (assoc ::c/skill-proficiencies #{}))))
+(defn page [route-key]
+  (assert (some #{route-key} routes))
+  {:key route-key
+   :title (str "New Character - " (titles route-key))})
+
+(assert (= (set (keys titles)) (set routes)))
+
+(reg-event-fx
+  ::next-page
+  h/middleware
+  (fn [{{{route-idx :index :as nav} ::db/nav :as db} :db :as cofx} _]
+    (let [current-route (get-in nav [:routes route-idx :key])
+          ;; Next page
+          new-page (element-after routes current-route)]
+      {:db (case new-page
+             :characters-new-abilities
+             (assoc-in db [::db/new-character ::c/abilities]
+                    (into {} (for [ability a/abilities] [ability 10])))
+
+             :characters-new-proficiencies
+             (assoc-in db [::db/new-character ::c/skill-proficiencies] #{})
+
+             db)
+       :dispatch [:nav/push (page new-page)]})))
 
 (reg-event-db
   ::set-name
