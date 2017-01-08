@@ -53,7 +53,9 @@
                       ::db/state ::db/view-character
                       ::db/character-ids all-character-ids))
        :set-storage-n [{:key character-id, :value chr}
-                       {:key :character-ids, :value all-character-ids}]})))
+                       {:key :character-ids, :value all-character-ids}]
+       :dispatch [:nav/push {:key :characters-index
+                             :title "Characters"}]})))
 
 (def middleware [h/middleware (path ::db/new-character)])
 
