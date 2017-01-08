@@ -10,12 +10,15 @@
             [illithid.character.classes :refer [classes]]
             [illithid.handlers :as h]))
 
-(reg-event-db
+(reg-event-fx
   ::initialize
   h/middleware
-  (fn [db _] (assoc db
-                    ::db/new-character {}
-                    ::db/state ::db/new-character)))
+  (fn [{:keys [db]} _]
+    {:db (assoc db
+                ::db/new-character {}
+                ::db/state ::db/new-character)
+     :dispatch-n (list [::set-class :cleric]
+                       [::set-race :human])}))
 
 ;; db -> [db character-id]
 (defn- gen-character-id [{old-id ::db/last-character-id :as db}]
