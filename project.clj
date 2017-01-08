@@ -13,7 +13,7 @@
                  [core-async-storage "0.1.1"]
                  [org.clojure/core.async "0.2.395"]]
   :plugins [[lein-cljsbuild "1.1.4"]
-            [lein-figwheel "0.5.8"]]
+            [lein-figwheel "0.5.9-SNAPSHOT"]]
   :resource-paths ["resources"]
   :clean-targets ["target/" "index.ios.js" "index.android.js"]
   :aliases {"prod-build" ^{:doc "Recompile code with prod profile."}
@@ -22,7 +22,7 @@
              ["with-profile" "prod" "cljsbuild" "once" "android"]]}
   :profiles
   {:dev {:dependencies
-         [[figwheel-sidecar "0.5.8"]
+         [[figwheel-sidecar "0.5.9-SNAPSHOT"]
           [com.cemerick/piggieback "0.2.1"]]
          :source-paths ["src" "env/dev"]
          :cljsbuild
@@ -33,7 +33,8 @@
                     {:output-to     "target/ios/not-used.js"
                      :main          "env.ios.main"
                      :output-dir    "target/ios"
-                     :optimizations :none}}
+                     :optimizations :none
+                     :warnings {:munged-namespace false}}}
                    :android
                    {:source-paths ["src" "env/dev"]
                     :figwheel     true
@@ -41,7 +42,8 @@
                     {:output-to     "target/android/not-used.js"
                      :main          "env.android.main"
                      :output-dir    "target/android"
-                     :optimizations :none}}}}
+                     :optimizations :none
+                     :warnings {:munged-namespace false}}}}}
          :repl-options
          {:nrepl-middleware [cemerick.piggieback/wrap-cljs-repl]}}
    :prod {:cljsbuild
@@ -50,10 +52,12 @@
                      :compiler     {:output-to     "index.ios.js"
                                     :main          "env.ios.main"
                                     :output-dir    "target/ios"
-                                    :optimizations :simple}}
+                                    :optimizations :simple
+                                    :warnings {:munged-namespace false}}}
                     :android
                     {:source-paths ["src" "env/prod"]
                      :compiler     {:output-to     "index.android.js"
                                     :main          "env.android.main"
                                     :output-dir    "target/android"
-                                    :optimizations :simple}}}}}})
+                                    :optimizations :simple
+                                    :warnings {:munged-namespace false}}}}}}})

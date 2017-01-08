@@ -1,5 +1,6 @@
 (ns illithid.components.new-character.basic-info
-  (:require [re-frame.core :refer [subscribe dispatch]]
+  (:require [reagent.core :as reagent]
+            [re-frame.core :refer [subscribe dispatch dispatch-sync]]
             [illithid.character.race :as race]
             [illithid.character.cclass :as cclass]
             [illithid.character.races :refer [races]]
@@ -7,8 +8,8 @@
             [illithid.subs.new-character :as sub]
             [illithid.handlers.new-character :as pub]
             [illithid.components.new-character.core :refer [render-page]]
-            [illithid.components.native
-             :refer [view text text-input touchable-highlight]]
+            [illithid.components.native :refer [view text]]
+            [illithid.components.text-input :refer [text-input]]
             [illithid.components.picker :refer [picker]]))
 
 (defn basic-info []
@@ -18,11 +19,10 @@
     (fn []
       [view
        [text "Name"]
-       [text-input
-        {:placeholder "Gundrik Bjornsson"
-         :value @character-name
-         :on-change-text #(dispatch [::pub/set-name %])
-         :auto-capitalize "words"}]
+       [text-input {:placeholder "Gundrik Bjornsson"
+                    :sub [::sub/name]
+                    :pub ::pub/set-name
+                    :auto-capitalize "words"}]
 
        [text "Race"]
        [picker {:prompt "Pick a race for your character"

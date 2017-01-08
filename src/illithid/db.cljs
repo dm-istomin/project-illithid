@@ -10,7 +10,8 @@
 (s/def ::route (s/keys :req-un [:route/key :route/title]))
 
 (s/def :nav/index integer?)
-(s/def :nav/routes (s/coll-of ::route))
+(s/def :nav/routes (s/and (s/coll-of ::route)
+                          #(apply distinct? (map :key %))))
 (s/def ::nav (s/keys :req-un [:nav/index :nav/routes]
                      :opt-un [:route/key]))
 
