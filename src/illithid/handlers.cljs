@@ -32,4 +32,6 @@
   (fn [{::db/keys [character-ids] :as db} _]
     (assoc db ::db/last-character-id
            (apply max
-                  (or (seq (map (comp js/parseInt name) character-ids)) [0])))))
+                  (or (seq (map #(->> % name (re-seq #"\d+") first js/parseInt)
+                                character-ids))
+                      [0])))))
