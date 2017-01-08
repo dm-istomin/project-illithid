@@ -1,8 +1,8 @@
 (ns illithid.android.core
   (:require [reagent.core :as r :refer [atom]]
             [re-frame.core :refer [subscribe dispatch dispatch-sync]]
-            [illithid.handlers]
-            [illithid.subs]
+            [illithid.handlers.nav]
+            [illithid.subs.nav]
             [illithid.scenes.core :as s]
             [illithid.scenes.not-found :refer [not-found]]
             [illithid.components.ui :refer [toolbar]]))

@@ -7,5 +7,4 @@
   [view [text "here are som chars, bro"]
    [button {:text "New Character"
             :on-press #(dispatch
-                         [:nav/push {:key :characters-new-basic-info
-                                     :title "New Character - Basic Info"}])}]])
+                         [:nav/push :characters-new-basic-info])}]])

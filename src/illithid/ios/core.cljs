@@ -1,8 +1,7 @@
 (ns illithid.ios.core
   (:require [reagent.core :as r :refer [atom]]
             [re-frame.core :refer [subscribe dispatch dispatch-sync]]
-            [illithid.handlers]
-            [illithid.subs]))
+            [illithid.handlers]))
 
 (def react-native (js/require "react-native"))
 

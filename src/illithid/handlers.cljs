@@ -1,18 +1,7 @@
 (ns illithid.handlers
-  (:require
-    [re-frame.core :refer [reg-event-db after debug]]
-    [clojure.spec :as s]
-    [illithid.db :as db]))
-
-;;;
-
-(defn dec-to-zero
-  "Same as dec if not zero"
-  [arg]
-  (if (< 0 arg)
-    (dec arg)
-    arg))
-
+  (:require [re-frame.core :refer [reg-event-db after debug]]
+            [clojure.spec :as s]
+            [illithid.db :as db]))
 ;;;
 
 (defn validate-schema!
@@ -30,29 +19,3 @@
   :initialize-db
   middleware
   (constantly db/initial))
-
-(reg-event-db
-  :nav/push
-  middleware
-  (fn [db [_ value]]
-    (-> db
-        (update-in [::db/nav :index] inc)
-        (update-in [::db/nav :routes] #(conj % value)))))
-
-(reg-event-db
-  :nav/pop
-  middleware
-  (fn [db [_ _]]
-    (-> db
-        (update-in [::db/nav :index] dec-to-zero)
-        (update-in [::db/nav :routes] pop))))
-
-(reg-event-db
-  :nav/home
-  middleware
-  (fn [db [_ _]]
-    (-> db
-        (assoc-in [::db/nav :index] 0)
-        (assoc-in [::db/nav :routes]
-                  (vector (get-in db [::db/nav :routes 0]))))))
-
