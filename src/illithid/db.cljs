@@ -1,5 +1,7 @@
 (ns illithid.db
   (:require [clojure.spec :as s :include-macros true]
+            [cljs.spec.impl.gen :as gen]
+            [taoensso.encore :refer [xdistinct]]
             [illithid.character.core :as c]
             [illithid.spec :refer-macros [set-of]]))
 
@@ -10,22 +12,25 @@
 (s/def ::route (s/keys :req-un [:route/key :route/title]))
 
 (s/def :nav/index integer?)
-(s/def :nav/routes (s/and (s/coll-of ::route)
-                          #(apply distinct? (map :key %))))
+(s/def :nav/routes
+  (s/with-gen
+    (s/and (s/coll-of ::route :kind vector? :into [])
+           #(apply distinct? (map :key %)))
+    #(gen/fmap (partial into [] (xdistinct :key))
+               (s/gen (s/coll-of ::route)))))
 (s/def ::nav (s/keys :req-un [:nav/index :nav/routes]
                      :opt-un [:route/key]))
 
 ;;; New Character
 
-(s/def ::state keyword?)
+(s/def ::state #{::home ::new-character ::view-character})
 (defmulti state ::state)
 
 (defmethod state ::home [_] (s/keys))
 
 (s/def ::new-character
   (s/keys :opt [::c/name ::c/class ::c/race ::c/abilities
-                ::c/skill-proficiencies
-                ::previous-page]))
+                ::c/skill-proficiencies]))
 
 (defmethod state ::new-character [_] (s/keys :req [::new-character]))
 

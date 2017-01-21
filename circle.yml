@@ -1,0 +1,11 @@
+machine:
+  java:
+    version: openjdk8
+
+dependencies:
+  override:
+    - lein deps
+
+test:
+  override:
+    - lein doo phantom test once

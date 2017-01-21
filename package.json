@@ -16,6 +16,7 @@
     "react-native-material-design": "^0.3.7"
   },
   "devDependencies": {
+    "karma-cljs-test": "^0.1.0",
     "re-natal": "^0.3.2"
   }
 }

@@ -1,5 +1,6 @@
 (ns illithid.handlers.nav
   (:require [re-frame.core :refer [reg-event-db reg-event-fx after debug]]
+            [clojure.spec :as s :include-macros true]
             [illithid.handlers :refer [middleware]]
             [illithid.lib.core :refer [dec-to-zero]]
             [illithid.db :as db]))
@@ -26,11 +27,19 @@
       ;; If the route already exists, remove it from the stack and add it to
       ;; the beginning
       (update-in db [::db/nav :routes]
-                 #(-> % (->> (remove matches-route)) (conj route)))
+                 #(let [without-dupe (into [] (remove matches-route %))
+                        with-new-route (conj without-dupe route)]
+                   (into [] with-new-route)))
       ;; Otherwise, just push the route to the stack
       (-> db
           (update-in [::db/nav :index] inc)
           (update-in [::db/nav :routes] conj route)))))
+(s/fdef push-raw
+        :args (s/cat :db ::db/app-db
+                     :action (s/tuple #{:nav/push-raw} ::db/route))
+        :ret ::db/app-db
+        :fn #(= (-> % :args :action last) (-> % :ret ::db/nav :routes last)))
+
 (reg-event-db :nav/push-raw middleware push-raw)
 
 (reg-event-fx
