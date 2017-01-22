@@ -10,7 +10,7 @@
                                                cljsjs/react-dom
                                                cljsjs/react-dom-server]]
                  [re-frame "0.8.0"]
-                 [core-async-storage "0.1.1"]
+                 [core-async-storage "0.2.0"]
                  [org.clojure/core.async "0.2.395"]
                  [com.taoensso/encore "2.88.2"]]
   :plugins [[lein-cljsbuild "1.1.4"]

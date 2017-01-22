@@ -1,7 +1,8 @@
 (ns illithid.storage-fx
   (:require [cljs.core.async :refer [<!]]
             [re-frame.core :refer [reg-fx reg-event-fx dispatch]]
-            [glittershark.core-async-storage :refer [get-item set-item]])
+            [glittershark.core-async-storage
+             :refer [get-item multi-get set-item]])
   (:require-macros [cljs.core.async.macros :refer [go]]))
 
 (reg-event-fx
@@ -22,6 +23,17 @@
             (throw error)
             (dispatch [::storage-loaded {:db-key db-key
                                          :storage-value (or value default-value)
+                                         :next-ev next-ev}]))))))
+
+(reg-fx
+  :load-storage-n
+  (fn [{storage-keys :keys
+        db-key :into
+        next-ev :then-dispatch}]
+    (go (let [[error value] (<! (multi-get storage-keys))]
+          (if error (throw error)
+            (dispatch [::storage-loaded {:db-key db-key
+                                         :storage-value value
                                          :next-ev next-ev}]))))))
 
 (reg-fx
