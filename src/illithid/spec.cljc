@@ -10,4 +10,3 @@
                   (into [])
                   (flatten))]
     `(s/coll-of ~sp ~@opts)))
-

@@ -1,24 +1,10 @@
 (ns illithid.handlers.nav
   (:require [re-frame.core :refer [reg-event-db reg-event-fx after debug]]
             [clojure.spec :as s :include-macros true]
+            [illithid.routes :as routes]
             [illithid.handlers :refer [middleware]]
             [illithid.lib.core :refer [dec-to-zero]]
             [illithid.db :as db]))
-
-(def default-title "Illithid")
-(def titles
-  {:characters-index "Characters"
-   :characters-new-basic-info "New Character - Basic Info"
-   :characters-new-abilities "New Character - Abilities"
-   :characters-new-proficiencies "New Character - Proficiencies"
-
-   :spell-detail "Spell Detail"
-   :spell-list "Spell List"})
-
-(defn title-for [route-key]
-  (get titles route-key default-title))
-
-;;;
 
 (defn push-raw
   [{{:keys [routes]} ::db/nav :as db} [_ {route-key :key :as route}]]
@@ -46,12 +32,7 @@
   :nav/push
   middleware
   (fn [{:keys [db]} [_ route]]
-    (let [raw-route
-          (cond
-            (map? route) (update route :title
-                                 #(or % (title-for (:key route))))
-            (keyword? route) {:key route, :title (title-for route)})]
-      {:dispatch [:nav/push-raw raw-route]})))
+    {:dispatch [:nav/push-raw (routes/to-route route)]}))
 
 (reg-event-db
   :nav/pop

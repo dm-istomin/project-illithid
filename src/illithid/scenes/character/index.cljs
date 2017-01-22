@@ -37,7 +37,4 @@
     (dispatch [::pub/load-characters])
     (fn []
       [view
-       [button {:text "Create New"
-                :on-press #(dispatch
-                             [:nav/push :characters-new-basic-info])}]
        [character-list @characters]])))
