@@ -78,3 +78,6 @@
 (s/fdef skill-modifier
         :args (s/cat :character ::character :skill ::sk/skill)
         :ret  int?)
+
+(defn race-name  [character] (-> character ::race ::r/name))
+(defn class-name [character] (-> character ::class ::c/name))

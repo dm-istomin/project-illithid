@@ -40,12 +40,15 @@
 (s/def ::last-character-id (s/and int? (complement neg?)))
 (s/def ::character-ids (set-of ::c/id))
 
+(s/def ::characters (s/map-of ::c/id ::c/character))
+
 ;;; Database
 
 (s/def ::app-db (s/merge (s/multi-spec state ::state)
                          (s/keys :req [::nav]
                                  :opt [::last-character-id
-                                       ::character-ids])))
+                                       ::character-ids
+                                       ::characters])))
 
 (def initial
   {::state ::home
