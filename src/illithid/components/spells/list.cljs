@@ -2,11 +2,11 @@
   (:require [re-frame.core :refer [dispatch]]
             [reagent.core :as r]
             [clojure.string :as string]
-            [illithid.components.native :refer [view text image list-view]]
+            [illithid.components.native
+             :refer [view text image list-view DataSource]]
             [illithid.character.spell :as sp]
+            [illithid.components.spells.logo-image :as logo-image]
             [illithid.components.ui :refer [ripple]]))
-
-(def logo-img (js/require "./images/magic-missle.png"))
 
 (defn format-classes [classes]
   (string/join ", " (map #(-> % name string/capitalize) classes)))
@@ -30,7 +30,7 @@
            :style (:view style)
            :on-press #(dispatch [:nav/push {:key :spell-detail
                                             :params {:spell-data spell}}])}
-   [image {:style (:img style) :source logo-img}]
+   [image {:style (:img style) :source logo-image/source}]
    [view {:style {:flex-direction "column"}}
     [text {:style (:text style)} (-> :name spell .toUpperCase)]
     [text {:style {:color "darkgrey"
@@ -38,8 +38,7 @@
      (str "Level " (:level spell) " • "
           (format-classes (:classes spell)))]]])
 
-(def data-source
-  (React.ListView.DataSource. #js{:rowHasChanged (fn [a b] false)}))
+(def data-source (DataSource. #js{:rowHasChanged (fn [a b] false)}))
 
 (defn render-row [spell]
   (r/as-element (spell-list-item (js->clj spell :keywordize-keys true))))

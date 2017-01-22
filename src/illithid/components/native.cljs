@@ -1,6 +1,6 @@
 (ns illithid.components.native
   (:require [reagent.core :as r]
-            [illithid.react :refer [react]])
+            [illithid.react :refer [react native?]])
   (:require-macros [illithid.components.native :refer [defclasses]]))
 
 (defclasses
@@ -17,15 +17,22 @@
   list-view ListView
   switch Switch)
 
-(def DataSource (-> react (aget "ListView") (aget "DataSource")))
+(def DataSource
+  (or (some-> react (aget "ListView") (aget "DataSource"))
+      (fn [] (js-obj))))
 
 ;; TODO: update `defclass` to support nested components
 
-(def navigation-bar (r/adapt-react-class
-                      (-> react (aget "Navigator") (aget "NavigationBar"))))
+(def navigation-bar
+  (when native?
+    (r/adapt-react-class
+      (-> react (aget "Navigator") (aget "NavigationBar")))))
 
-(def picker-item (r/adapt-react-class
-                   (-> react (aget "Picker") (aget "Item"))))
+(def picker-item
+  (when native?
+    (r/adapt-react-class
+      (-> react (aget "Picker") (aget "Item")))))
 
 (defn add-back-listener [h]
-  (.addEventListener (-> react (aget "BackAndroid")) "hardwareBackPress" h))
+  (when native?
+    (.addEventListener (-> react (aget "BackAndroid")) "hardwareBackPress" h)))
