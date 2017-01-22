@@ -14,7 +14,7 @@
                  [org.clojure/core.async "0.2.395"]
                  [com.taoensso/encore "2.88.2"]]
   :plugins [[lein-cljsbuild "1.1.4"]
-            [lein-figwheel "0.5.9-SNAPSHOT"]
+            [lein-figwheel "0.5.8"]
             [lein-doo "0.1.7"]]
   :resource-paths ["resources"]
   :clean-targets ["target/" "index.ios.js" "index.android.js"]
@@ -24,7 +24,7 @@
              ["with-profile" "prod" "cljsbuild" "once" "android"]]}
   :profiles
   {:dev {:dependencies
-         [[figwheel-sidecar "0.5.9-SNAPSHOT"]
+         [[figwheel-sidecar "0.5.8"]
           [com.cemerick/piggieback "0.2.1"]]
          :source-paths ["src" "env/dev"]
 
