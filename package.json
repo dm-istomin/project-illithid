@@ -13,9 +13,11 @@
   "dependencies": {
     "react": "^15.4.1",
     "react-native": "0.38.0",
-    "react-native-material-design": "^0.3.7"
+    "react-native-material-design": "^0.3.7",
+    "babel-plugin-transform-es2015-block-scoping": "6.15.0"
   },
   "devDependencies": {
+    "karma-cljs-test": "^0.1.0",
     "re-natal": "^0.3.2"
   }
 }
