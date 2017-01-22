@@ -13,3 +13,6 @@
 
 (def platform (.-Platform react))
 
+(def list-view (.-ListView react))
+(def list-view-data-source (.-DataSource list-view))
+
