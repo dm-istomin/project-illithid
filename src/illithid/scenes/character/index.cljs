@@ -1,11 +1,10 @@
 (ns illithid.scenes.character.index
   (:require [re-frame.core :refer [subscribe dispatch]]
             [reagent.core :as r]
-            [illithid.react :refer [list-view-data-source]]
             [illithid.character.core :as ch]
             [illithid.subs.characters :as sub]
             [illithid.handlers.characters :as pub]
-            [illithid.components.native :refer [view text list-view]]
+            [illithid.components.native :refer [view text list-view DataSource]]
             [illithid.components.ui :refer [button ripple]]))
 
 (defn character-list-item [cid]
@@ -25,7 +24,7 @@
          [text (ch/class-name @character)]]]])))
 
 (def data-source
-  (list-view-data-source. #js{:rowHasChanged (constantly false)}))
+  (DataSource. #js{:rowHasChanged (constantly false)}))
 
 (defn character-list [characters]
   [list-view
@@ -37,7 +36,4 @@
     (dispatch [::pub/load-characters])
     (fn []
       [view
-       [button {:text "Create New"
-                :on-press #(dispatch
-                             [:nav/push :characters-new-basic-info])}]
        [character-list @characters]])))

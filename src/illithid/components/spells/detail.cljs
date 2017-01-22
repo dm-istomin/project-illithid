@@ -5,7 +5,8 @@
             [illithid.character.spell :as sp]
             [illithid.components.ui :refer [icon ripple]]))
 
-(def logo-img (js/require "./images/magic-missle.png"))
+(def logo-img (when (exists? js/require)
+                (js/require "./images/magic-missle.png")))
 
 (def style {:view {:height 604
                    :padding-left 15

@@ -3,7 +3,7 @@
             [re-frame.core :refer [subscribe dispatch dispatch-sync]]
             [illithid.handlers.nav]
             [illithid.subs.nav]
-            [illithid.scenes.core :as s]
+            [illithid.routes :as routes]
             [illithid.scenes.not-found :refer [not-found]]
             [illithid.components.ui :refer [toolbar]]))
 
@@ -23,24 +23,26 @@
    :card-stack {:flex 1}})
 
 (defn header [props]
-  (if (= (aget props "scene" "route" "key") "home")
-    [toolbar {:title (aget props "scene" "route" "title")
-              :overrides {:background-color "#08708a"
-                          :color "#f5f5f5"
-                          :left-icon-color "#f5f5f5"}}]
-    [toolbar {:title (aget props "scene" "route" "title")
+  (let [props (js->clj props :keywordize-keys true)
+        opts {:title (-> props :scene :route :title)
               :overrides {:background-color "#08708a"
                           :color "#f5f5f5"
                           :left-icon-color "#f5f5f5"}
-              :on-icon-press #(dispatch [:nav/pop nil])
-              :icon "arrow-back"}]))
+              :actions (if-let [action (-> props :scene :route :action)]
+                         [action]
+                         [])}
+        opts (if (= "home" (-> props :scene :route :key)) opts
+               (assoc opts
+                      :on-icon-press #(dispatch [:nav/pop nil])
+                      :icon "arrow-back"))]
+    [toolbar opts]))
 
 (defn scene [props]
   (let [route (aget props "scene" "route" "key")
         title (aget props "scene" "route" "title")
         params (aget props "scene" "route" "params")]
      [view (:view style)
-      (if-let [route-view (get s/routes (keyword route))]
+      (if-let [route-view (routes/component-for (keyword route))]
         [route-view params]
         [not-found])]))
 

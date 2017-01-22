@@ -3,8 +3,10 @@
 (defmacro defclass
   "Define `var-name` as an adapted React class based on js/React.<attr>"
   [var-name attr]
-  `(def ~var-name (reagent.core/adapt-react-class
-                    (aget illithid.react/react ~(name attr)))))
+  `(def ~var-name
+     (when illithid.react/native?
+       (reagent.core/adapt-react-class
+         (aget illithid.react/react ~(name attr))))))
 
 (defmacro defclasses
   "Define pairs of arguments as adapted react classes as per `defclass`"

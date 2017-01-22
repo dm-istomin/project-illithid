@@ -1,6 +1,9 @@
 (ns illithid.react)
 
-(def react (js/require "react-native"))
+(def react (if (exists? js/require)
+             (js/require "react-native")
+             js/React))
+(def native? (exists? js/require))
 (set! js/window.React react)
 
 (defn alert [title] (.alert (.-Alert react) title))
@@ -12,7 +15,4 @@
 (def animated (.-Animated react))
 
 (def platform (.-Platform react))
-
-(def list-view (.-ListView react))
-(def list-view-data-source (.-DataSource list-view))
 
