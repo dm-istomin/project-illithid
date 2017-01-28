@@ -1,15 +1,1 @@
-{:illithid.character.spell/material-component nil, :illithid.character.spell/level 4, :illithid.character.spell/name"Conjure Minor Elementals", :illithid.character.spell/components #{:V :S}, :illithid.character.spell/casting_time"1 minute", :illithid.character.spell/ritual false, :illithid.character.spell/duration nil, :illithid.character.spell/classes #{:druid :wizard}, :illithid.character.spell/description"You summon elementals that appear in unoccupied spaces that you can see within range. You choose one the following options for what appears:
-
-- One elemental of challenge rating 2 or lower
-
-- Two elementals of challenge rating 1 or lower
-
-- Four elementals of challenge rating 1/2 or lower
-
-- Eight elementals of challenge rating 1/4 or lower.
-
-An elemental summoned by this spell disappears when it drops to 0 hit points or when the spell ends.
-
-The summoned creatures are friendly to you and your companions. Roll initiative for the summoned creatures as a group, which has its own turns. They obey any verbal commands that you issue to them (no action required by you). If you don’t issue any commands to them, they defend themselves from hostile creatures, but otherwise take no actions.
-
-The DM has the creatures' statistics.", :id :conjure-minor-elementals, :illithid.character.spell/range"90 feet", :illithid.character.spell/school :school/conjuration}
+#:illithid.character.spell{:description "You summon elementals that appear in unoccupied spaces that you can see within range. You choose one the following options for what appears:\n\n- One elemental of challenge rating 2 or lower\n\n- Two elementals of challenge rating 1 or lower\n\n- Four elementals of challenge rating 1/2 or lower\n\n- Eight elementals of challenge rating 1/4 or lower.\n\nAn elemental summoned by this spell disappears when it drops to 0 hit points or when the spell ends.\n\nThe summoned creatures are friendly to you and your companions. Roll initiative for the summoned creatures as a group, which has its own turns. They obey any verbal commands that you issue to them (no action required by you). If you don’t issue any commands to them, they defend themselves from hostile creatures, but otherwise take no actions.\n\nThe DM has the creatures' statistics.", :material-component nil, :ritual? false, :school :school/conjuration, :name "Conjure Minor Elementals", :duration "Up to 1 hour", :level 4, :components #{:V :S}, :id :conjure-minor-elementals, :casting-time "1 minute", :classes #{:druid :wizard}, :range "90 feet"}

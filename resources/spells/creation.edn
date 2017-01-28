@@ -1,15 +1,1 @@
-{:illithid.character.spell/material-component"A tiny piece of matter of the same type of the item you plan to create.", :illithid.character.spell/level 5, :illithid.character.spell/name"Creation", :illithid.character.spell/components #{:M :V :S}, :illithid.character.spell/casting_time"1 minute", :illithid.character.spell/ritual false, :illithid.character.spell/duration nil, :illithid.character.spell/classes #{:sorcerer :wizard}, :illithid.character.spell/description"You pull wisps of shadow material from the Shadowfell to create a nonliving object of vegetable matter within 'range': soft goods, rope, wood, or something similar. You can also use this spell to create mineral objects such as stone, crystal, or metal. The object created must be no larger than a 5-foot cube, and the object must be of a form and material that you have seen before.
-
-The duration depends on the object’s material. If the object is composed of multiple materials, use the shortest duration.
-
-Vegetable matter 1 day
-
-Stone or crystal 12 hours
-
-Precious metals 1 hour
-
-Gems 10 minutes
-
-Adamantine or mithral 1 minute
-
-Using any material created by this spell as another spell’s material component causes that spell to fail.", :id :creation, :illithid.character.spell/range"30 feet", :illithid.character.spell/school :school/illusion}
+#:illithid.character.spell{:description "You pull wisps of shadow material from the Shadowfell to create a nonliving object of vegetable matter within 'range': soft goods, rope, wood, or something similar. You can also use this spell to create mineral objects such as stone, crystal, or metal. The object created must be no larger than a 5-foot cube, and the object must be of a form and material that you have seen before.\n\nThe duration depends on the object’s material. If the object is composed of multiple materials, use the shortest duration.\n\nVegetable matter 1 day\n\nStone or crystal 12 hours\n\nPrecious metals 1 hour\n\nGems 10 minutes\n\nAdamantine or mithral 1 minute\n\nUsing any material created by this spell as another spell’s material component causes that spell to fail.", :material-component "A tiny piece of matter of the same type of the item you plan to create.", :ritual? false, :school :school/illusion, :name "Creation", :duration "Special", :level 5, :components #{:M :V :S}, :id :creation, :casting-time "1 minute", :classes #{:sorcerer :wizard}, :range "30 feet"}

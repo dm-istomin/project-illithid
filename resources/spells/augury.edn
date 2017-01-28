@@ -1,13 +1,1 @@
-{:illithid.character.spell/material-component"Specially marked sticks, bones, or similar tokens worth at least 25gp.", :illithid.character.spell/level 2, :illithid.character.spell/name"Augury", :illithid.character.spell/components #{:M :V :S}, :illithid.character.spell/casting_time"1 minute", :illithid.character.spell/ritual true, :illithid.character.spell/duration nil, :illithid.character.spell/classes #{:cleric :ritual-caster}, :illithid.character.spell/description"By casting gem-inlaid sticks, rolling dragon bones, laying out ornate cards, or employing some other divining tool, you receive an omen from an otherworldly entity about the results of a specific course of action that you plan to take within the next 30 minutes. The DM chooses from the following possible omens:
-
-- Weal, for good results
-
-- Woe, for bad results
-
-- Weal and woe, for both good and bad results
-
-- Nothing, for results that aren’t especially good or bad
-
-The spell doesn’t take into account any possible circumstances that might change the outcome, such as the casting of additional spells or the loss or gain of a companion.
-
-If you cast the spell two or more times before completing your next long rest, there is a cumulative 25 percent chance for each casting after the first that you get a random reading. The DM makes this roll in secret.", :id :augury, :illithid.character.spell/range"Self", :illithid.character.spell/school :school/divination}
+#:illithid.character.spell{:description "By casting gem-inlaid sticks, rolling dragon bones, laying out ornate cards, or employing some other divining tool, you receive an omen from an otherworldly entity about the results of a specific course of action that you plan to take within the next 30 minutes. The DM chooses from the following possible omens:\n\n- Weal, for good results\n\n- Woe, for bad results\n\n- Weal and woe, for both good and bad results\n\n- Nothing, for results that aren’t especially good or bad\n\nThe spell doesn’t take into account any possible circumstances that might change the outcome, such as the casting of additional spells or the loss or gain of a companion.\n\nIf you cast the spell two or more times before completing your next long rest, there is a cumulative 25 percent chance for each casting after the first that you get a random reading. The DM makes this roll in secret.", :material-component "Specially marked sticks, bones, or similar tokens worth at least 25gp.", :ritual? true, :school :school/divination, :name "Augury", :duration "Instantaneous", :level 2, :components #{:M :V :S}, :id :augury, :casting-time "1 minute", :classes #{:cleric :ritual-caster}, :range "Self"}

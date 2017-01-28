@@ -1,15 +1,1 @@
-{:illithid.character.spell/material-component"One holly berry per creature summoned.", :illithid.character.spell/level 4, :illithid.character.spell/name"Conjure Woodland Beings", :illithid.character.spell/components #{:M :V :S}, :illithid.character.spell/casting_time"1 action", :illithid.character.spell/ritual false, :illithid.character.spell/duration nil, :illithid.character.spell/classes #{:druid :ranger}, :illithid.character.spell/description"You summon fey creatures that appear in unoccupied spaces that you can see within range. Choose one of the following options for what appears:
-
-- One fey creature of challenge rating 2 or lower
-
-- Two fey creatures of challenge rating 1 or lower
-
-- Four fey creatures of challenge rating 1/2 or lower
-
-- Eight fey creatures of challenge rating 1/4 or lower
-
-A summoned creature disappears when it drops to 0 hit points or when the spell ends.
-
-The summoned creatures are friendly to you and your companions. Roll initiative for the summoned creatures as a group, which have their own turns. They obey any verbal commands that you issue to them (no action required by you). If you don't issue any commands to them, they defend themselves from hostile creatures, but otherwise take no actions.
-
-The DM has the creatures’ statistics.", :id :conjure-woodland-beings, :illithid.character.spell/range"60 feet", :illithid.character.spell/school :school/conjuration}
+#:illithid.character.spell{:description "You summon fey creatures that appear in unoccupied spaces that you can see within range. Choose one of the following options for what appears:\n\n- One fey creature of challenge rating 2 or lower\n\n- Two fey creatures of challenge rating 1 or lower\n\n- Four fey creatures of challenge rating 1/2 or lower\n\n- Eight fey creatures of challenge rating 1/4 or lower\n\nA summoned creature disappears when it drops to 0 hit points or when the spell ends.\n\nThe summoned creatures are friendly to you and your companions. Roll initiative for the summoned creatures as a group, which have their own turns. They obey any verbal commands that you issue to them (no action required by you). If you don't issue any commands to them, they defend themselves from hostile creatures, but otherwise take no actions.\n\nThe DM has the creatures’ statistics.", :material-component "One holly berry per creature summoned.", :ritual? false, :school :school/conjuration, :name "Conjure Woodland Beings", :duration "Up to 1 hour", :level 4, :components #{:M :V :S}, :id :conjure-woodland-beings, :casting-time "1 action", :classes #{:druid :ranger}, :range "60 feet"}
