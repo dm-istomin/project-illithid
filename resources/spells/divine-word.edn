@@ -1,11 +1,1 @@
-{:illithid.character.spell/material-component nil, :illithid.character.spell/level 7, :illithid.character.spell/name"Divine Word", :illithid.character.spell/components #{:V}, :illithid.character.spell/casting_time"1 bonus action", :illithid.character.spell/ritual false, :illithid.character.spell/duration nil, :illithid.character.spell/classes #{:cleric}, :illithid.character.spell/description"You speak a word of God, full of the power that has shaped the world at the dawn of creation. Choose as many creatures as you want from those you see, in the range of the spell. Every creature that hears you must make a backup Charisma, or she undergoes an effect based on the current value of his life.
-
-- pv or less 50: muted for 1 minute
-
-- 40 hp or less: deafened and blinded for 10 minutes
-
-- 30 hp or less: blinded, deafened and dazed for 1 hour
-
-- 20 hp or less: killed instantly
-
-Regardless of its points of current life, a celestial, an elementary, a fairy or a fiend who fails his roll is returned to its original plan (if not already) and it can not go back on your plan for 24 hours, regardless of the means, with the exception of the wish spell.", :id :divine-word, :illithid.character.spell/range"30 feet", :illithid.character.spell/school :school/evocation}
+#:illithid.character.spell{:description "You speak a word of God, full of the power that has shaped the world at the dawn of creation. Choose as many creatures as you want from those you see, in the range of the spell. Every creature that hears you must make a backup Charisma, or she undergoes an effect based on the current value of his life.\n\n- pv or less 50: muted for 1 minute\n\n- 40 hp or less: deafened and blinded for 10 minutes\n\n- 30 hp or less: blinded, deafened and dazed for 1 hour\n\n- 20 hp or less: killed instantly\n\nRegardless of its points of current life, a celestial, an elementary, a fairy or a fiend who fails his roll is returned to its original plan (if not already) and it can not go back on your plan for 24 hours, regardless of the means, with the exception of the wish spell.", :material-component nil, :ritual? false, :school :school/evocation, :name "Divine Word", :duration "Instantaneous", :level 7, :components #{:V}, :id :divine-word, :casting-time "1 bonus action", :classes #{:cleric}, :range "30 feet"}

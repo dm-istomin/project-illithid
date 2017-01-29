@@ -1,12 +1,13 @@
 (ns illithid.character.spell
   (:require [clojure.spec :as s #?@(:cljs [:include-macros true])]
+            [illithid.character.cclass :as cls]
             [illithid.spec #?@(:clj  [:refer [set-of]]
                                :cljs [:refer-macros [set-of]])]))
 
 (s/def ::id keyword?)
 (s/def ::name (s/and string? seq))
 (s/def ::level (s/and int? #(<= 0 % 9)))
-(s/def ::classes (set-of :illithid.character.cclass/id :min-count 1))
+(s/def ::classes (set-of ::cls/id :min-count 1))
 (s/def ::school #{:school/abjuration
                   :school/conjuration
                   :school/divination
@@ -16,11 +17,12 @@
                   :school/necromancy
                   :school/transmutation})
 (s/def ::ritual? boolean?)
-(s/def ::concentration? boolean?)
+;; (s/def ::concentration? boolean?)
 (s/def ::component #{:V :S :M})
 (s/def ::components (set-of ::component :min-count 1))
 (s/def ::description (s/and string? seq))
-(s/def ::material-component (s/and string? seq))
+(s/def ::material-component (s/or :no-material-component nil?
+                                  :has-material-component (s/and string? seq)))
 ;; TODO: more structured data for these four?
 (s/def ::at-higher-levels (s/and string? seq))
 (s/def ::range (s/and string? seq))
@@ -28,7 +30,8 @@
 (s/def ::casting-time (s/and string? seq))
 
 (s/def ::spell
-  (s/keys :req [::id ::name ::level ::classes ::school ::ritual?
-                ::concentration? ::components ::description ::range ::duration
-                ::casting-time]
+  (s/keys :req [::id ::name ::level ::classes ::school ::ritual?  ::components
+                ::description ::range ::duration ::casting-time
+                ;;::concentration?
+                ]
           :opt [::at-higher-levels]))
