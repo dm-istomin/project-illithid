@@ -1,12 +1,13 @@
 (ns illithid.character.spell
   (:require [clojure.spec :as s #?@(:cljs [:include-macros true])]
+            [illithid.character.cclass :as cls]
             [illithid.spec #?@(:clj  [:refer [set-of]]
                                :cljs [:refer-macros [set-of]])]))
 
 (s/def ::id keyword?)
 (s/def ::name (s/and string? seq))
 (s/def ::level (s/and int? #(<= 0 % 9)))
-(s/def ::classes (set-of :illithid.character.cclass/id :min-count 1))
+(s/def ::classes (set-of ::cls/id :min-count 1))
 (s/def ::school #{:school/abjuration
                   :school/conjuration
                   :school/divination

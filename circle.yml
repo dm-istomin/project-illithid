@@ -9,3 +9,4 @@ dependencies:
 test:
   override:
     - lein doo phantom test once
+    - lein test

@@ -1,8 +1,10 @@
 (ns illithid.resources
+  "Utilities for splicing EDN from resource files into Clojurescript"
   (:require [clojure.java.io :refer [reader resource file]]
             [clojure.edn :as edn]
             [clojure.string :refer [split]]
-            [clojure.spec :as s])
+            [clojure.spec :as s]
+            [illithid.lib.core :refer [try-require-ns]])
   (:import [java.io File PushbackReader]))
 
 (defn read-resource [filename]
@@ -19,7 +21,13 @@
     {}
     (for [{filename :name, body :body} (read-resources dir)]
       (let [fname (-> filename (split #"\.") first)]
-        (when spec (s/assert* spec body))
+        (when spec
+          (try-require-ns spec)
+          (try
+            (s/assert* spec body)
+            (catch Exception e
+              (when (re-matches #"^Unable to resolve spec:.*$" (.getMessage e))
+                (.println *err* (str "WARNING: " (.getMessage e)))))))
         [(keyword fname) body]))))
 
 (defmacro splice-resource [filename] (read-resource filename))
