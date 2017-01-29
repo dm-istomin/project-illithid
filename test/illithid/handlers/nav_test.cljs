@@ -1,32 +1,28 @@
 (ns illithid.handlers.nav-test
   (:require [cljs.test :refer-macros [deftest is testing]]
             [clojure.spec :as s]
-            [clojure.test.check.clojure-test :refer-macros [defspec]]
-            [clojure.test.check.properties :as prop :include-macros true]
+            [com.gfredericks.test.chuck.clojure-test :refer-macros [checking]]
             [clojure.test.check.generators :as gen]
-            [clojure.spec.test :as stest]
             [illithid.db :as db]
             [illithid.handlers.nav :refer [push-raw]]))
 
-(stest/instrument)
+(deftest push-raw-test
+  (checking "new route adds to the end of the routes list" 5
+    [route (s/gen ::db/route)
+     db' (s/gen ::db/app-db)
+     :let [db (update-in db' [::db/nav :routes]
+                         (comp vec (partial remove #{route})))
+           result (push-raw db [:nav/push-raw route])]]
 
-(defspec new-route-adds-to-end 5
-  (prop/for-all
-    [[db route] (gen/such-that
-                  #(every? (complement #{%2}) (-> %1 ::db/nav :routes))
-                  (gen/tuple (s/gen ::db/app-db)
-                             (s/gen ::db/route)))]
-    (let [result (push-raw db [:nav/push-raw route])]
-      (= route (-> result ::db/nav :routes last)))))
+    (is (s/valid? ::db/app-db result) (s/explain-str ::db/app-db result))
+    (is (= route (-> result ::db/nav :routes last))))
 
-(defspec duplicate-route-adds-to-end 5
-  (prop/for-all
-    [[db route] (gen/bind
-                  (gen/such-that #(-> % ::db/nav :routes seq)
-                                 (s/gen ::db/app-db))
-                  (fn [db]
-                    (gen/tuple (gen/return db)
-                               (-> db ::db/nav :routes gen/elements))))]
-    (let [result (push-raw db [:nav/push-raw route])]
-      (= route (-> result ::db/nav :routes last)))))
+  (checking "duplicate route adds to the end of the routes list" 5
+    [db (s/gen ::db/app-db)
+     :when (-> db ::db/nav :routes seq)
+     route (-> db ::db/nav :routes gen/elements)
+     :let [result (push-raw db [:nav/push-raw route])]]
+
+    (is (s/valid? ::db/app-db result) (s/explain-str ::db/app-db result))
+    (is (= route (-> result ::db/nav :routes last)))))
 
