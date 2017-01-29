@@ -44,5 +44,8 @@
   (r/as-element (spell-list-item (js->clj spell :keywordize-keys true))))
 
 (defn spell-list [spells]
-  [list-view {:render-row #(render-row %)
-     :dataSource (.cloneWithRows data-source (clj->js spells))}])
+  [list-view
+   {:render-row #(render-row %)
+    :dataSource (.cloneWithRows
+                  data-source
+                  (->> spells vals (sort-by ::sp/name) clj->js))}])
