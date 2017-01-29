@@ -26,35 +26,34 @@
     [(assoc db ::db/last-character-id new-id)
      (keyword "illithid.character" (str "c" new-id))]))
 
-;; Save the new character to ::db/character
-(reg-event-fx
-  ::save
-  h/middleware
-  (fn [{{new-character ::db/new-character :as db} :db} _]
-    (let [[db character-id] (gen-character-id db)
-          saving-throw-proficiencies (-> new-character
-                                         ::c/class
-                                         ::cl/saving-throw-proficiencies)
-          all-character-ids (conj (::db/character-ids db #{}) character-id)
-          chr
-          (-> new-character
-              (select-keys
-                [::c/name
-                 ::c/class
-                 ::c/race
-                 ::c/abilities
-                 ::c/skill-proficiencies])
-              (assoc
-                ::c/level 1
-                ::c/saving-throw-proficiencies saving-throw-proficiencies))]
-      {:db (-> db
-               (dissoc ::db/new-character)
-               (assoc ::db/character chr
-                      ::db/state ::db/view-character
-                      ::db/character-ids all-character-ids))
-       :set-storage-n [{:key character-id, :value chr}
-                       {:key :character-ids, :value all-character-ids}]
-       :dispatch [:nav/push :characters-index]})))
+(defn save
+  "Save the new character to ::db/character"
+  [{{new-character ::db/new-character :as db} :db} _]
+  (let [[db character-id] (gen-character-id db)
+        saving-throw-proficiencies (-> new-character
+                                       ::c/class
+                                       ::cl/saving-throw-proficiencies)
+        all-character-ids (conj (::db/character-ids db #{}) character-id)
+        chr
+        (-> new-character
+            (select-keys
+              [::c/name
+               ::c/class
+               ::c/race
+               ::c/abilities
+               ::c/skill-proficiencies])
+            (assoc
+              ::c/level 1
+              ::c/saving-throw-proficiencies saving-throw-proficiencies))]
+    {:db (-> db
+             (dissoc ::db/new-character)
+             (assoc ::db/state ::db/home
+                    ::db/character-ids all-character-ids)
+             (assoc-in [::db/characters character-id] chr))
+     :set-storage-n [{:key character-id, :value chr}
+                     {:key :character-ids, :value all-character-ids}]
+     :dispatch [:nav/push :characters-index]}))
+(reg-event-fx ::save h/middleware save)
 
 (def middleware [h/middleware (path ::db/new-character)])
 
