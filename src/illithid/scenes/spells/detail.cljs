@@ -1,8 +1,7 @@
 (ns illithid.scenes.spells.detail
-  (:require [illithid.components.spells.detail :refer [spell-detail]]))
+  (:require [illithid.components.spells.detail :refer [spell-detail]]
+            [illithid.character.spells :refer [spells]]))
 
 (defn spell-detail-scene [params]
-  (let [spell-data (-> params
-                       (aget "spell-data")
-                       (js->clj :keywordize-keys true))]
-    [spell-detail spell-data]))
+  (let [spell (-> params (aget "spell-id") keyword spells)]
+    [spell-detail spell]))
