@@ -8,11 +8,12 @@
 (def logo-img (when (exists? js/require)
                 (js/require "./images/magic-missle.png")))
 
-(def style {:view {:height 604
-                   :padding-left 15
+(def style {:view {:padding-left 15
                    :padding-right 15
                    :background-color "white"}
-            :title {:font-weight "bold"}
+            :title {:font-weight "bold"
+                    :text-align "right"
+                    :margin-right 5}
             :img {:border-radius 75
                   :border-width 5
                   :border-color "#ccc"
@@ -38,7 +39,7 @@
                     :border-top-width 3
                     :padding 10
                     :padding-left 0}
-            :body {:padding 40}})
+            :body {:padding 20}})
 
 (defn format-spell-school [school] (-> school name string/capitalize))
 
@@ -46,19 +47,19 @@
   (string/join ", " (map #(-> % name string/capitalize) classes)))
 
 (defn format-spell-components [components]
-  (string/join ", "
-               (map (fn [c] (case (keyword c)
-                              :V "Verbal"
-                              :S "Somatic"
-                              :M "Material"))
-                    components)))
+  (->> components
+       (map {:V "Verbal"
+             :S "Somatic"
+             :M "Material"})
+       sort
+       (string/join ", ")))
 
 (defn spell-detail [spell]
   [scroll-view {:style (:view style)}
    [view {:style {:flex-direction "row"
                   :padding 10}}
     [image {:source logo-img :style (:img style)}]
-    [view {:style {:margin-left 50}}
+    [view {:style {:margin-left 15}}
       [text {:style (:header style)} (::sp/name spell)]
       [view {:style {:flex-direction "row" :margin-top 15}}
         [icon {:name "redo" :size 16 :style {:margin-right 3}}]
