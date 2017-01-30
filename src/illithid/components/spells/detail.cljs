@@ -53,21 +53,21 @@
                               :M "Material"))
                     components)))
 
-(defn spell-detail [props]
+(defn spell-detail [spell]
   [scroll-view {:style (:view style)}
    [view {:style {:flex-direction "row"
                   :padding 10}}
     [image {:source logo-img :style (:img style)}]
     [view {:style {:margin-left 50}}
-      [text {:style (:header style)} (:name props)]
+      [text {:style (:header style)} (::sp/name spell)]
       [view {:style {:flex-direction "row" :margin-top 15}}
         [icon {:name "redo" :size 16 :style {:margin-right 3}}]
         [text {:style {:margin-right 5 :font-weight "bold"}} "RANGE"]
-        [text (:range props)]]
+        [text (::sp/range spell)]]
       [view {:style {:flex-direction "row"}}
         [icon {:name "timer" :size 16 :style {:margin-right 3}}]
         [text {:style {:margin-right 5 :font-weight "bold"}} "CASTING TIME"]
-        [text (or (:casting-time props) "–")]]]]
+        [text (or (::sp/casting-time spell) "–")]]]]
     [view {:style (:table style)}
      [view {:style {:width 120}}
       [text {:style (:title style)} "LEVEL"]
@@ -75,15 +75,15 @@
       [text {:style (:title style)} "SCHOOL"]
       [text {:style (:title style)} "DURATION"]
       [text {:style (:title style)} "COMPONENTS"]
-      (if (:material-component props)
+      (if (::sp/material-component spell)
          [text {:style (:title style)} "MATERIAL"])]
      [view {:style {:width 180}}
-      [text  (props :level)]
-      [text  (format-classes (:classes props))]
-      [text  (format-spell-school (:school props))]
-      [text  (or (:duration props) "–")]
-      [text  (format-spell-components (:components props))]
-      (if (:material-component props)
+      [text (::sp/level spell)]
+      [text (format-classes (::sp/classes spell))]
+      [text (format-spell-school (::sp/school spell))]
+      [text (or (::sp/duration spell) "–")]
+      [text (format-spell-components (::sp/components spell))]
+      (if-let [material-component (::sp/material-component spell)]
         [text {:style {:font-style "italic"}}
-          (:material-component props)])]]
-    [text {:style (:body style)} (:description props)]])
+          material-component])]]
+    [text {:style (:body style)} (::sp/description spell)]])
