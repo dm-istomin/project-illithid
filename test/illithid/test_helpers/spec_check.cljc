@@ -3,6 +3,7 @@
                            :cljs [:refer-macros [is]])]
             [clojure.pprint :as pprint]
             [clojure.spec.test :as stest]
+            [clojure.spec :as s]
             #?(:clj [cljs.spec.test :as stest-m])))
 
 (defn summarize-results [spec-result]
@@ -13,3 +14,8 @@
   `(let [result# (stest-m/check ~@args)]
      (is (not (some :failure result#))
          (summarize-results result#))))
+
+(defmacro is-valid [spec value]
+  `(let [spec# ~spec
+         value# ~value]
+     (is (s/valid? spec# value#) (s/explain-str spec# value#))))

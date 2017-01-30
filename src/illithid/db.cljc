@@ -1,9 +1,11 @@
 (ns illithid.db
-  (:require [clojure.spec :as s :include-macros true]
-            [cljs.spec.impl.gen :as gen]
+  (:require [clojure.spec :as s #?@(:cljs [:include-macros true])]
+            #?(:clj  [clojure.spec.gen :as gen]
+               :cljs [cljs.spec.impl.gen :as gen])
+            [illithid.spec #?@(:clj  [:refer [set-of]]
+                               :cljs [:refer-macros [set-of]])]
             [taoensso.encore :refer [xdistinct]]
-            [illithid.character.core :as c]
-            [illithid.spec :refer-macros [set-of]]))
+            [illithid.character.core :as c]))
 
 ;;; Routes
 
@@ -14,10 +16,10 @@
 (s/def :nav/index integer?)
 (s/def :nav/routes
   (s/with-gen
-    (s/and (s/coll-of ::route :kind vector? :into [])
-           #(apply distinct? (map :key %)))
-    #(gen/fmap (partial into [] (xdistinct :key))
-               (s/gen (s/coll-of ::route)))))
+      (s/and (s/coll-of ::route :kind vector? :into [])
+             #(or (empty? %) (apply distinct? (map :key %))))
+      #(gen/fmap (partial into [] (xdistinct :key))
+                 (s/gen (s/coll-of ::route)))))
 (s/def ::nav (s/keys :req-un [:nav/index :nav/routes]
                      :opt-un [:route/key]))
 
