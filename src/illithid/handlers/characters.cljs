@@ -10,4 +10,3 @@
       {:load-storage-n {:keys character-ids
                         :into ::db/characters}}
       {})))
-

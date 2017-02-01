@@ -5,6 +5,7 @@
             [illithid.scenes.home :as home]
             [illithid.scenes.character.index :refer [character-index]]
             [illithid.scenes.character.new :as new-character]
+            [illithid.scenes.character.show :refer [character-show-scene]]
             [illithid.scenes.spells.list :refer [spell-list-scene]]
             [illithid.scenes.spells.detail :refer [spell-detail-scene]]))
 
@@ -31,6 +32,10 @@
     :title "Characters"
     :action {:icon "add"
              :onPress #(dispatch [:nav/push :characters-new-basic-info])}}
+
+   :character-show
+   {:component character-show-scene
+    :title "View Character"}
 
    :characters-new-basic-info
    {:component new-character/basic-info
