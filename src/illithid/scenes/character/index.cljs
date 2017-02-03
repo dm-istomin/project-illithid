@@ -14,7 +14,10 @@
                :style {:background-color "white"
                        :border-bottom-width 1
                        :border-color "lightgrey"
-                       :padding 20}}
+                       :padding 20}
+               :on-press #(dispatch [:nav/push
+                                     {:key :character-show
+                                      :params {:character-id cid}}])}
        [view
         [text {:style {:font-weight "bold"}}
          (::ch/name @character)]

@@ -1,4 +1,5 @@
 (ns illithid.character.ability
+  (:refer-clojure :exclude [name])
   (:require [clojure.spec :as s #?@(:cljs [:include-macros true])]))
 
 (def abilities #{::str ::dex ::con ::int ::wis ::cha})
@@ -25,3 +26,22 @@
         :ret int?
         :fn #(= (-> % :ret pos?)
                 (-> % :args :ability-score pos?)))
+
+(def names {::str {::short-name "STR"
+                   ::long-name "Strength"}
+            ::dex {::short-name "DEX"
+                   ::long-name "Dexterity"}
+            ::con {::short-name "CON"
+                   ::long-name "Constitution"}
+            ::int {::short-name "INT"
+                   ::long-name "Intelligence"}
+            ::wis {::short-name "WIS"
+                   ::long-name "Wisdom"}
+            ::cha {::short-name "CHA"
+                   ::long-name "Charisma"}})
+
+(defn short-name [ability] (get-in names [ability ::short-name]))
+(s/fdef short-name :args (s/cat :ability ::ability) :ret (s/and string? seq))
+
+(defn long-name [ability] (get-in names [ability ::long-name]))
+(s/fdef long-name :args (s/cat :ability ::ability) :ret (s/and string? seq))
