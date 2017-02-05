@@ -9,6 +9,7 @@
   image Image
   touchable-highlight TouchableHighlight
   touchable-native-feedback TouchableNativeFeedback
+  touchable-opacity TouchableOpacity
   pan-responder PanResponder
   picker Picker
   scroll-view ScrollView
@@ -17,13 +18,14 @@
   list-view ListView
   switch Switch
   navigation-bar [Navigator NavigationBar]
+  card-stack [NavigationExperimental CardStack]
+  navigation-header [NavigationExperimental Header]
+  navigation-header-title [NavigationExperimental Header Title]
   picker-item [Picker Item])
 
 (def DataSource
   (or (some-> react (aget "ListView") (aget "DataSource"))
       (fn [] (js-obj))))
-
-(def NavigationExperimental (.-NavigationExperimental react))
 
 ;;;
 

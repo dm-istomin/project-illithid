@@ -1,6 +1,9 @@
 (ns illithid.routes
-  (:require [re-frame.core :refer [dispatch]]
-            [cljs.spec :as s :include-macros true]
+  (:require [clojure.spec :as s :include-macros true]
+            [clojure.test.check]
+            [clojure.test.check.generators]
+            [clojure.test.check.properties]
+            [re-frame.core :refer [dispatch]]
             [illithid.specs.reagent]
             [illithid.scenes.home :as home]
             [illithid.scenes.character.index :refer [character-index]]
@@ -14,8 +17,10 @@
   (s/def :route/title (s/and string? seq))
 
   (s/def :action/icon string?)
+  (s/def :action/ios-icon string?)
   (s/def :action/onPress fn?)
   (s/def :route/action (s/keys :req-un [:action/icon
+                                        :action/ios-icon
                                         :action/onPress]))
 
   (s/def ::route (s/keys :req-un [:route/component]
@@ -31,6 +36,7 @@
    {:component character-index
     :title "Characters"
     :action {:icon "add"
+             :ios-icon "➕"
              :onPress #(dispatch [:nav/push :characters-new-basic-info])}}
 
    :character-show
