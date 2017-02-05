@@ -15,23 +15,17 @@
   navigator Navigator
   text-input TextInput
   list-view ListView
-  switch Switch)
+  switch Switch
+  navigation-bar [Navigator NavigationBar]
+  picker-item [Picker Item])
 
 (def DataSource
   (or (some-> react (aget "ListView") (aget "DataSource"))
       (fn [] (js-obj))))
 
-;; TODO: update `defclass` to support nested components
+(def NavigationExperimental (.-NavigationExperimental react))
 
-(def navigation-bar
-  (when native?
-    (r/adapt-react-class
-      (-> react (aget "Navigator") (aget "NavigationBar")))))
-
-(def picker-item
-  (when native?
-    (r/adapt-react-class
-      (-> react (aget "Picker") (aget "Item")))))
+;;;
 
 (defn add-back-listener [h]
   (when native?

@@ -6,6 +6,7 @@
   :dependencies [[org.clojure/clojure "1.9.0-alpha14"]
                  [org.clojure/clojurescript "1.9.293"]
                  [org.clojure/test.check "0.9.0"]
+                 [org.clojure/core.match "0.3.0-alpha4"]
                  [com.gfredericks/test.chuck "0.2.7"]
                  [reagent "0.6.0" :exclusions [cljsjs/react
                                                cljsjs/react-dom
