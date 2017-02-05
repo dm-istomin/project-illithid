@@ -17,13 +17,14 @@
   list-view ListView
   switch Switch
   navigation-bar [Navigator NavigationBar]
+  card-stack [NavigationExperimental CardStack]
+  navigation-header [NavigationExperimental Header]
+  navigation-header-title [NavigationExperimental Header Title]
   picker-item [Picker Item])
 
 (def DataSource
   (or (some-> react (aget "ListView") (aget "DataSource"))
       (fn [] (js-obj))))
-
-(def NavigationExperimental (.-NavigationExperimental react))
 
 ;;;
 

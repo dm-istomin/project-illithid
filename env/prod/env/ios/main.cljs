@@ -1,6 +1,6 @@
- (ns env.ios.main
+(ns env.ios.main
   (:require [illithid.ios.core :as core]))
 
- (core/init)
+(core/init)
 
 
