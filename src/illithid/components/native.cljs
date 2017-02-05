@@ -9,6 +9,7 @@
   image Image
   touchable-highlight TouchableHighlight
   touchable-native-feedback TouchableNativeFeedback
+  touchable-opacity TouchableOpacity
   pan-responder PanResponder
   picker Picker
   scroll-view ScrollView

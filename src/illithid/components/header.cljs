@@ -4,7 +4,15 @@
             [illithid.platform :as platform :include-macros true]
             [illithid.components.ui :refer [toolbar]]
             [illithid.components.native
-             :refer [view text navigation-header navigation-header-title]]))
+             :refer [view text navigation-header navigation-header-title
+                     touchable-opacity]]))
+
+(defn ios-action [{:keys [icon] on-press :onPress}]
+  [touchable-opacity {:on-press on-press
+                      :style {:height 24
+                              :width 24
+                              :margin 10}}
+   [text (get {"add" "➕"} icon "⁉️")]])
 
 (defn header [props]
   (let [props (js->clj props :keywordize-keys true)]
@@ -29,7 +37,10 @@
          :render-title-component
          #(r/as-element
             [navigation-header-title (-> props :scene :route :title)])
-         :on-navigate-back #(dispatch [:nav/pop]))]
+         :on-navigate-back #(dispatch [:nav/pop])
+         :render-right-component
+         #(when-let [action (-> props :scene :route :action)]
+            (r/as-element [ios-action action])))]
       #_[view
        [text (-> props :scene :route :title)]])))
 
