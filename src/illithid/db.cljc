@@ -11,7 +11,9 @@
 
 (s/def :route/key keyword?)
 (s/def :route/title string?)
-(s/def ::route (s/keys :req-un [:route/key :route/title]))
+(s/def :route/params map?)
+(s/def ::route (s/keys :req-un [:route/key :route/title]
+                       :opt-un [:route/params]))
 
 (s/def :nav/index integer?)
 (s/def :nav/routes

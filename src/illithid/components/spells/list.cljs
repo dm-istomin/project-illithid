@@ -60,4 +60,6 @@
    {:render-row #(render-row %)
     :dataSource (.cloneWithRows
                   data-source
-                  (->> spells vals (sort-by ::sp/name) (apply array)))}])
+                  (->> spells
+                       (sort-by (juxt ::sp/level ::sp/name))
+                       (apply array)))}])
