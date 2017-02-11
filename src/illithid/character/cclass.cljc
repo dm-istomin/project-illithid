@@ -6,7 +6,8 @@
                :cljs [cljs.spec.impl.gen :as gen])
             [illithid.die :as die]
             [illithid.character.skill :as sk]
-            [illithid.character.ability :as a]))
+            [illithid.character.ability :as a]
+            [illithid.character.spells :as spells]))
 
 (def max-level 20)
 
@@ -30,6 +31,8 @@
     #(gen/fmap (comp vec sort)
                (s/gen (s/coll-of (s/and int? pos?) :count max-level)))))
 
+(s/def ::spellcaster? boolean?)
+
 (s/def ::class
   (s/keys :req [::id
                 ::name
@@ -37,7 +40,8 @@
                 ::first-level-hit-points
                 ::proficiency-bonuses
                 ::skill-proficiencies
-                ::saving-throw-proficiencies]))
+                ::saving-throw-proficiencies
+                ::spellcaster?]))
 
 (def empty-class
   {::name "-"
@@ -45,3 +49,9 @@
    ::first-level-hit-points 1
    ::proficiency-bonuses (vec (range 1 (inc max-level)))})
 
+(defn spells [{::keys [id]}]
+  (->>
+    spells/spells vals (filter #((:illithid.character.spell/classes %) id))))
+(s/fdef spells
+        :args (s/cat :class ::class)
+        :ret (s/coll-of :illithid.character.spell/spell))

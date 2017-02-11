@@ -4,6 +4,8 @@
             [clojure.test.check.generators]
             [clojure.test.check.properties]
             [re-frame.core :refer [dispatch]]
+            [illithid.character.cclass :as cl]
+            [illithid.character.classes :refer [classes]]
             [illithid.specs.reagent]
             [illithid.scenes.home :as home]
             [illithid.scenes.character.index :refer [character-index]]
@@ -14,7 +16,11 @@
 
 (do ;;; Route specs {{{
   (s/def :route/component :reagent/component-fn)
-  (s/def :route/title (s/and string? seq))
+  (s/def :route/params map?)
+  (s/def :route/title
+    (s/or :static-title (s/and string? seq)
+          :title-function (s/fspec :args (s/cat :params? (s/? :route/params))
+                                   :ret (s/and string? seq))))
 
   (s/def :action/icon string?)
   (s/def :action/ios-icon string?)
@@ -30,35 +36,42 @@
 ;;; }}}
 
 (def routes
-  {:home {:component home/home}
+  (s/assert
+    ::routes
+    {:home {:component home/home}
 
-   :characters-index
-   {:component character-index
-    :title "Characters"
-    :action {:icon "add"
-             :ios-icon "➕"
-             :onPress #(dispatch [:nav/push :characters-new-basic-info])}}
+     :characters-index
+     {:component character-index
+      :title "Characters"
+      :action {:icon "add"
+               :ios-icon "➕"
+               :onPress #(dispatch [:nav/push :characters-new-basic-info])}}
 
-   :character-show
-   {:component character-show-scene
-    :title "View Character"}
+     :character-show
+     {:component character-show-scene
+      :title "View Character"}
 
-   :characters-new-basic-info
-   {:component new-character/basic-info
-    :title "New Character - Basic Info"}
+     :characters-new-basic-info
+     {:component new-character/basic-info
+      :title "New Character - Basic Info"}
 
-   :characters-new-abilities
-   {:component new-character/abilities
-    :title "New Character - Abilities"}
+     :characters-new-abilities
+     {:component new-character/abilities
+      :title "New Character - Abilities"}
 
-   :characters-new-proficiencies
-   {:component new-character/proficiencies
-    :title "New Character - Proficiencies"}
+     :characters-new-proficiencies
+     {:component new-character/proficiencies
+      :title "New Character - Proficiencies"}
 
-   :spell-detail {:component spell-detail-scene :title "Spell Detail"}
-   :spell-list {:component spell-list-scene :title "Spell List"}})
+     :spell-list
+     {:component spell-list-scene
+      :title (fn [& [params]]
+               (if-let [cls (some-> params ::cl/id classes)]
+                 (str (::cl/name cls) " Spells")
+                 "Spell List"))}
 
-(s/assert ::routes routes)
+     :spell-detail {:component spell-detail-scene :title "Spell Detail"}
+     :class-spell-list {:component spell-list-scene :title (fn [params?])}}))
 
 ;;; Route accessors
 
@@ -67,18 +80,27 @@
 (defn route [route-key] (get routes route-key))
 
 (defn component-for [route-key] (get-in routes [route-key :component]))
-(defn title-for [route-key] (get-in routes [route-key :title] default-title))
+
+(defn title-for [route-key & [params]]
+  (let [title (get-in routes [route-key :title] default-title)]
+    (if (ifn? title)
+      (apply title (if params [params] []))
+      (str title))))
+
 (defn action-for [route-key] (get-in routes [route-key :action]))
 
 (defn to-route
   {:arglists '([route-key] [route-map])}
   [route]
   (cond
-    (map? route) (-> route
-                     (update :title #(or % (title-for (:key route))))
-                     (update :action #(or % (action-for (:key route)))))
-    (keyword? route) {:key route
-                      :title (title-for route)
-                      :action (action-for route)}))
+    (map? route)
+    (-> route
+        (update :title #(or % (title-for (:key route) (:params route))))
+        (update :action #(or % (action-for (:key route)))))
+
+    (keyword? route)
+    {:key route
+     :title (title-for route)
+     :action (action-for route)}))
 
 ; vim:fdm=marker:fmr={{{,}}}:

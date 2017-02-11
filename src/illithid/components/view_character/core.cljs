@@ -1,7 +1,9 @@
 (ns illithid.components.view-character.core
   (:require [re-frame.core :refer [subscribe dispatch]]
             [illithid.character.core :as ch]
-            [illithid.components.native :refer [view text scroll-view]]
+            [illithid.character.cclass :as cl]
+            [illithid.components.native
+             :refer [view text scroll-view touchable-highlight]]
             [illithid.components.view-character.abilities
              :refer [character-abilities]]
             [illithid.components.view-character.skills
@@ -18,7 +20,9 @@
                      :flex-direction "row"
                      :padding-left 10
                      :padding-top 15
-                     :padding-bottom 15)})
+                     :padding-bottom 15
+                     :justify-content "space-between")
+   :link {:color "#3da7ff"}})
 
 (defn show-character [character]
   [scroll-view {:style {:background-color "white"
@@ -30,7 +34,15 @@
     [view {:style (:subheader style)}
      [text
       "Level " (::ch/level character) " "
-      (ch/race-name character) " " (ch/class-name character)]]
+      (ch/race-name character) " " (ch/class-name character)]
+     (when (-> character ::ch/class ::cl/spellcaster?)
+       [touchable-highlight
+        {:on-press
+         #(dispatch
+            [:nav/push
+             {:key :spell-list
+              :params {::cl/id (-> character ::ch/class ::cl/id)}}])}
+        [text {:style (:link style)} "Spells"]])]
     [character-abilities (::ch/abilities character)]
     [character-skills character]]])
 
