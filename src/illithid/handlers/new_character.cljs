@@ -6,6 +6,7 @@
             [illithid.character.core :as c]
             [illithid.character.ability :as a]
             [illithid.character.cclass :as cl]
+            [illithid.character.race :as r]
             [illithid.character.races :refer [races]]
             [illithid.character.classes :refer [classes]]
             [illithid.handlers :as h]))
@@ -31,15 +32,15 @@
   [{{new-character ::db/new-character :as db} :db} _]
   (let [[db character-id] (gen-character-id db)
         saving-throw-proficiencies (-> new-character
-                                       ::c/class
+                                       ::cl/id classes
                                        ::cl/saving-throw-proficiencies)
         all-character-ids (conj (::db/character-ids db #{}) character-id)
         chr
         (-> new-character
             (select-keys
               [::c/name
-               ::c/class
-               ::c/race
+               ::cl/id
+               ::r/id
                ::c/abilities
                ::c/skill-proficiencies])
             (assoc
@@ -88,17 +89,16 @@
   ::set-race
   middleware
   (fn [db [_ id-or-race]]
-    (assoc db ::c/race (if (keyword? id-or-race)
-                         (get races id-or-race)
-                         id-or-race))))
+    (assoc db ::r/id (cond (keyword? id-or-race) id-or-race
+                           (map? id-or-race)     (::r/id id-or-race)))))
 
 (reg-event-db
   ::set-class
   middleware
   (fn [db [_ id-or-class]]
-    (assoc db ::c/class (if (keyword? id-or-class)
-                         (get classes id-or-class)
-                         id-or-class))))
+    (assoc db ::cl/id (cond
+                        (keyword? id-or-class) id-or-class
+                        (map? id-or-class)     (::cl/id id-or-class)))))
 
 (reg-event-db
   ::set-ability

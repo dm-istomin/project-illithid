@@ -3,7 +3,10 @@
             [illithid.db :as db]
             [illithid.character.core :as c]
             [illithid.character.cclass :as cl]
-            [illithid.character.ability :as ability]))
+            [illithid.character.race :as r]
+            [illithid.character.ability :as ability]
+            [illithid.character.races :refer [races]]
+            [illithid.character.classes :refer [classes]]))
 
 (reg-sub
   ::page
@@ -19,11 +22,11 @@
 
 (reg-sub
   ::race
-  (fn [db _] (-> db ::db/new-character ::c/race)))
+  (fn [db _] (-> db ::db/new-character ::r/id races)))
 
 (reg-sub
   ::class
-  (fn [db _] (-> db ::db/new-character ::c/class)))
+  (fn [db _] (-> db ::db/new-character ::cl/id classes)))
 
 (reg-sub
   ::ability
@@ -38,20 +41,20 @@
   ::available-skill-proficiencies
   (fn [db _]
     (-> db
-        ::db/new-character ::c/class ::cl/skill-proficiencies
+        ::db/new-character ::cl/id classes ::cl/skill-proficiencies
         :skill-proficiencies/available)))
 
 (reg-sub
   ::num-skill-proficiencies
   (fn [db _]
     (-> db
-        ::db/new-character ::c/class ::cl/skill-proficiencies
+        ::db/new-character ::cl/id classes ::cl/skill-proficiencies
         :skill-proficiencies/number)))
 
 (reg-sub
   ::proficient?
   (fn [db [_ skill]]
-    (boolean ((-> db ::db/new-character ::c/skill-proficiencies) skill))))
+    (boolean (get (-> db ::db/new-character ::c/skill-proficiencies) skill))))
 
 (reg-sub
   ::proficient-skills
@@ -61,8 +64,8 @@
   ::proficiency-full?
   (fn [db [_ skill]]
     (let [max-num (-> db
-                      ::db/new-character ::c/class ::cl/skill-proficiencies
-                      :skill-proficiencies/number)
+                      ::db/new-character ::cl/id classes
+                      ::cl/skill-proficiencies :skill-proficiencies/number)
           current-num (-> db ::db/new-character ::c/skill-proficiencies count)]
       (>= current-num max-num))))
 

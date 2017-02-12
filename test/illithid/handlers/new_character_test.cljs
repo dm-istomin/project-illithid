@@ -6,6 +6,8 @@
             [illithid.test-helpers.spec-check :refer-macros [is-valid]]
             [illithid.handlers.new-character :as handlers]
             [illithid.character.core :as ch]
+            [illithid.character.cclass :as cl]
+            [illithid.character.race :as r]
             [illithid.db :as db]))
 
 (deftest save-test
@@ -16,8 +18,8 @@
            orig-db (assoc db' ::db/new-character character)
            {:keys [db]} (handlers/save {:db orig-db} [::handlers/save])]]
     (letfn [(to-match [x]
-              (select-keys x [::ch/name ::ch/class ::ch/skill-proficiencies
-                              ::ch/race ::ch/abilities]))
+              (select-keys x [::ch/name ::cl/id ::r/id ::ch/abilities
+                              ::ch/skill-proficiencies]))
             (matches-character? [candidate]
               (= (to-match character) (to-match candidate)))]
 

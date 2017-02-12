@@ -1,4 +1,5 @@
 (ns illithid.character.core
+  (:refer-clojure :exclude [class])
   (:require [clojure.spec :as s #?@(:cljs [:include-macros true])]
             #?(:clj  [clojure.spec.gen :as gen]
                :cljs [cljs.spec.impl.gen :as gen])
@@ -7,14 +8,15 @@
             [illithid.character.race :as r]
             [illithid.character.cclass :as c]
             [illithid.character.ability :as a]
-            [illithid.character.skill :as sk]))
+            [illithid.character.skill :as sk]
+            [illithid.character.classes :refer [classes]]
+            [illithid.character.races :refer [races]]))
 
 (s/def ::id (s/with-gen (s/and keyword? #(= "illithid.character" (namespace %)))
               #(gen/fmap (partial keyword "illithid.character")
                          (s/gen (s/and string? seq)))))
 (s/def ::name string?)
 (s/def ::level (s/and int? pos? #(< % c/max-level)))
-(s/def ::class ::c/class)
 (s/def ::race ::r/race)
 
 (s/def ::abilities
@@ -26,8 +28,8 @@
 (s/def ::character
   (s/keys :req [::name
                 ::level
-                ::class
-                ::race
+                ::c/id
+                ::r/id
                 ::abilities
                 ::skill-proficiencies
                 ::saving-throw-proficiencies]))
@@ -44,6 +46,12 @@
                 ::a/cha 1}
    ::skill-proficiencies #{}
    ::saving-throw-proficiencies #{}})
+
+(defn class [character]
+  (get classes (::c/id character)))
+
+(defn race [character]
+  (get races (::r/id character)))
 
 (defn ability-modifier [character ability]
   (-> character ::abilities ability a/modifier))
@@ -69,7 +77,7 @@
         :ret boolean?)
 
 (defn proficiency-bonus [character]
-  (-> character ::level ((-> character ::class ::c/proficiency-bonuses))))
+  (-> character ::level ((-> character class ::c/proficiency-bonuses))))
 
 (defn skill-modifier [character skill]
   (+ (->> skill sk/ability-for-skill (ability-modifier character))
@@ -79,5 +87,5 @@
         :args (s/cat :character ::character :skill ::sk/skill)
         :ret  int?)
 
-(defn race-name  [character] (-> character ::race ::r/name))
-(defn class-name [character] (-> character ::class ::c/name))
+(defn race-name  [character] (-> character race ::r/name))
+(defn class-name [character] (-> character class ::c/name))

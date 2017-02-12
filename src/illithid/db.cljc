@@ -5,7 +5,9 @@
             [illithid.spec #?@(:clj  [:refer [set-of]]
                                :cljs [:refer-macros [set-of]])]
             [taoensso.encore :refer [xdistinct]]
-            [illithid.character.core :as c]))
+            [illithid.character.core :as c]
+            [illithid.character.cclass :as cl]
+            [illithid.character.race :as r]))
 
 ;;; Routes
 
@@ -33,7 +35,7 @@
 (defmethod state ::home [_] (s/keys))
 
 (s/def ::new-character
-  (s/keys :opt [::c/name ::c/class ::c/race ::c/abilities
+  (s/keys :opt [::c/name ::cl/id ::r/id ::c/abilities
                 ::c/skill-proficiencies]))
 
 (defmethod state ::new-character [_] (s/keys :req [::new-character]))

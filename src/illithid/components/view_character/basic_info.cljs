@@ -42,7 +42,7 @@
          #(dispatch
             [:nav/push
              {:key :spell-list
-              :params {::cl/id (-> character ::ch/class ::cl/id)}}])}
+              :params {::cl/id (-> character ::cl/id)}}])}
         [text {:style (:link style)} "Spells"]])]
     [character-abilities (::ch/abilities character)]
     [character-skills character]]])
