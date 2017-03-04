@@ -16,3 +16,5 @@
 
 (def platform (.-Platform react))
 
+(def action-sheet-ios (.-ActionSheetIOS react))
+

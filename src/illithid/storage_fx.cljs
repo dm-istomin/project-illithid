@@ -1,9 +1,11 @@
 (ns illithid.storage-fx
+  (:refer-clojure :exclude [cond])
   (:require [cljs.core.async :refer [<!]]
             [re-frame.core :refer [reg-fx reg-event-fx dispatch]]
             [glittershark.core-async-storage
              :refer [get-item multi-get set-item]])
-  (:require-macros [cljs.core.async.macros :refer [go]]))
+  (:require-macros [better-cond.core :refer [cond]]
+                   [cljs.core.async.macros :refer [go]]))
 
 (reg-event-fx
   ::storage-loaded
@@ -49,3 +51,16 @@
           (when-let [error (first (<! (set-item k v)))]
             (throw error))))))
 
+;; Merge the given value into the given storage key, using `clojure.core/merge`
+(reg-fx
+  :merge-storage
+  (fn [{storage-key :key
+        value :value
+        next-ev :then-dispatch}]
+    (go
+      (cond
+        :let [[error current-value] (<! (get-item storage-key))]
+        error (throw error)
+        :let [[error2] (<! (set-item storage-key (merge current-value value)))]
+        error2 (throw error2)
+        next-ev (dispatch next-ev)))))

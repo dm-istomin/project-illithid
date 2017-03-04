@@ -7,7 +7,8 @@
             [taoensso.encore :refer [xdistinct]]
             [illithid.character.core :as c]
             [illithid.character.cclass :as cl]
-            [illithid.character.race :as r]))
+            [illithid.character.race :as r]
+            [illithid.character.spell :as sp]))
 
 ;;; Routes
 
@@ -29,7 +30,7 @@
 
 ;;; New Character
 
-(s/def ::state #{::home ::new-character ::view-character})
+(s/def ::state #{::home ::new-character ::prepare-spells})
 (defmulti state ::state)
 
 (defmethod state ::home [_] (s/keys))
@@ -40,8 +41,12 @@
 
 (defmethod state ::new-character [_] (s/keys :req [::new-character]))
 
-(s/def ::character ::c/character)
-(defmethod state ::view-character [_] (s/keys :req [::character]))
+;;; Preparing spells
+
+(s/def ::prepared-spells (set-of ::sp/id))
+(defmethod state ::prepare-spells [_] (s/keys :req [::prepared-spells]))
+
+;;;
 
 (s/def ::last-character-id (s/and int? (complement neg?)))
 (s/def ::character-ids (set-of ::c/id))
