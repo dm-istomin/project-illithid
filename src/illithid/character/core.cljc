@@ -24,6 +24,7 @@
 
 (s/def ::skill-proficiencies (set-of ::sk/skill))
 (s/def ::saving-throw-proficiencies (set-of ::a/ability))
+(s/def ::prepared-spells (set-of :illithid.character.spell/id))
 
 (s/def ::character
   (s/keys :req [::name
@@ -32,7 +33,8 @@
                 ::r/id
                 ::abilities
                 ::skill-proficiencies
-                ::saving-throw-proficiencies]))
+                ::saving-throw-proficiencies]
+          :opt [::prepared-spells]))
 
 (def empty-character
   {::name "-"
@@ -89,3 +91,27 @@
 
 (defn race-name  [character] (-> character race ::r/name))
 (defn class-name [character] (-> character class ::c/name))
+
+(defn num-prepared-spells [character]
+  (let [cls (class character)]
+    (if-not (::c/spellcaster? cls) 0
+      (+ (proficiency-bonus character)
+         (when-let [{::c/keys [spellcasting-ability]} cls]
+           (ability-modifier character spellcasting-ability))))))
+
+(defn spell-slots [character]
+  (let [{::c/keys [spellcaster? spell-slots]} (class character)
+        ten-zeros (->> 0 repeat (take 10) vec)]
+    (if-not spellcaster? ten-zeros
+      (nth spell-slots (::level character) ten-zeros))))
+
+(defn max-spell-level [character]
+  (let [slots (spell-slots character)]
+    (assert (= slots (-> slots sort reverse)))
+    ;; the index of the last nonzero element of `slots`
+    ;; ie, one below the index of the first zero element of `slots`
+    (->> slots
+         (map-indexed vector)
+         (filter #(-> % second zero?)) first
+         first dec)))
+

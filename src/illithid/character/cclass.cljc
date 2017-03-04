@@ -32,6 +32,17 @@
                (s/gen (s/coll-of (s/and int? pos?) :count max-level)))))
 
 (s/def ::spellcaster? boolean?)
+(s/def ::spellcasting-ability ::a/ability)
+
+(s/def ::spell-slot-count (s/and int? (complement neg?)))
+(s/def ::level-spell-slots (s/coll-of ::spell-slot-count
+                                      :into []
+                                      :kind vector?
+                                      :count 10))
+(s/def ::spell-slots (s/coll-of ::level-spell-slots
+                                :into []
+                                :kind vector?
+                                :count max-level))
 
 (s/def ::class
   (s/keys :req [::id
@@ -41,7 +52,8 @@
                 ::proficiency-bonuses
                 ::skill-proficiencies
                 ::saving-throw-proficiencies
-                ::spellcaster?]))
+                ::spellcaster?]
+          :opt [::spellcasting-ability ::spell-slots]))
 
 (def empty-class
   {::name "-"
