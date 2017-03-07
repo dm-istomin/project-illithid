@@ -1,13 +1,17 @@
 (ns illithid.character.ability
-  (:refer-clojure :exclude [name])
-  (:require [clojure.spec :as s #?@(:cljs [:include-macros true])]))
+  (:require [clojure.spec :as s #?@(:cljs [:include-macros true])]
+            #?(:clj  [clojure.spec.gen :as gen]
+               :cljs [cljs.spec.impl.gen :as gen])))
 
 (def abilities #{::str ::dex ::con ::int ::wis ::cha})
 (defn ability? [x] (-> x abilities boolean))
 (s/def ::ability abilities)
 
 (def max-natural-ability 18)
-(s/def ::score (s/and int? pos? #(<= % max-natural-ability)))
+(s/def ::score
+  (s/with-gen
+    (s/and int? pos? #(<= % max-natural-ability))
+    #(gen/choose 1 max-natural-ability)))
 
 (s/def ::str ::score)
 (s/def ::dex ::score)
