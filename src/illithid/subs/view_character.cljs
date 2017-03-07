@@ -6,15 +6,15 @@
             [illithid.character.core :as c]
             [illithid.subs.characters :as sc]))
 
-(reg-sub
-  ::current-character-id
-  (fn [db _] (some->> db
-                      ::db/nav
-                      :routes
-                      (filter #(= :character-show (:key %)))
-                      first
-                      :params
-                      :character-id)))
+(defn current-character-id [db & _]
+  (some->> db
+           ::db/nav
+           :routes
+           (filter #(= :character-show (:key %)))
+           first
+           :params
+           :character-id))
+(reg-sub ::current-character-id current-character-id)
 
 (reg-sub
   ::current-character

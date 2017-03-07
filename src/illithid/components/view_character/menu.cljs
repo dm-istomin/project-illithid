@@ -1,14 +1,11 @@
 (ns illithid.components.view-character.menu
   (:require [re-frame.core :refer [dispatch subscribe]]
-            [illithid.subs.view-character :as vch]
+            [illithid.handlers.view-character :as pub]
             [illithid.react :refer [action-sheet-ios]]))
 
 (def actions
   {"Prepare Spells"
-   #(dispatch [:nav/push
-               {:key :prepare-spells
-                :params {:character-id
-                         @(subscribe [::vch/current-character-id])}}])})
+   #(dispatch [::pub/prepare-spells])})
 
 (defn show []
   (.showActionSheetWithOptions
