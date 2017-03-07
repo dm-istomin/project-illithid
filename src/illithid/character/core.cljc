@@ -10,13 +10,15 @@
             [illithid.character.ability :as a]
             [illithid.character.skill :as sk]
             [illithid.character.classes :refer [classes]]
-            [illithid.character.races :refer [races]]))
+            [illithid.character.races :refer [races]]
+            [illithid.character.spells :refer [spells]]))
 
 (s/def ::id (s/with-gen (s/and keyword? #(= "illithid.character" (namespace %)))
               #(gen/fmap (partial keyword "illithid.character")
                          (s/gen (s/and string? seq)))))
 (s/def ::name string?)
-(s/def ::level (s/and int? pos? #(< % c/max-level)))
+(s/def ::level (s/with-gen (s/and int? pos? #(< % c/max-level))
+                 #(gen/choose 1 c/max-level)))
 (s/def ::race ::r/race)
 
 (s/def ::abilities
@@ -114,4 +116,11 @@
          (map-indexed vector)
          (filter #(-> % second zero?)) first
          first dec)))
+
+(defn prepared-spells [character]
+  (select-keys spells (::prepared-spells character)))
+(s/fdef prepared-spells
+        :args (s/cat :character ::character)
+        :ret  (s/map-of :illithid.character.spell/id
+                        :illithid.character.spell/spell))
 

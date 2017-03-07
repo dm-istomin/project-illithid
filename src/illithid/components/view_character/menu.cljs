@@ -5,9 +5,10 @@
 
 (def actions
   {"Prepare Spells"
-   #(dispatch [:nav/push {:key :prepare-spells
-                          :params {:character-id
-                                   @(subscribe [::vch/current-character])}}])})
+   #(dispatch [:nav/push
+               {:key :prepare-spells
+                :params {:character-id
+                         @(subscribe [::vch/current-character-id])}}])})
 
 (defn show []
   (.showActionSheetWithOptions

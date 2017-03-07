@@ -21,10 +21,11 @@
                :on-value-change #(dispatch [::pub/set-prepared spell-id %])}])))
 
 (defn prepare-spells [character]
-  (let [max-prepared (reaction (ch/num-prepared-spells character))
-        num-prepared (subscribe [::sub/num-prepared])
-        full?        (reaction (>= @num-prepared @max-prepared))
-        max-spell-level (reaction (ch/max-spell-level character))]
+  (let [max-prepared     (subscribe [::sub/max-prepared])
+        num-prepared     (subscribe [::sub/num-prepared])
+        full?            (subscribe [::sub/full?])
+        max-spell-level  (subscribe [::sub/max-spell-level])
+        available-spells (subscribe [::sub/available-spells])]
     (dispatch [::pub/initialize])
     (fn []
       [view
@@ -36,6 +37,5 @@
           :else (str @num-prepared " out of "
                      @max-prepared " spells prepared"))]
        [spell-list
-        {:spells (->> character ch/class cl/spells
-                      (filter #(>= @max-spell-level (::sp/level %))))
+        {:spells @available-spells
          :render-action spell-prepare-switch}]])))
