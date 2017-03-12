@@ -8,5 +8,6 @@ dependencies:
 
 test:
   override:
-    - lein doo phantom test once
+    - lein doo phantom test once:
+        timeout: 2400
     - lein test
