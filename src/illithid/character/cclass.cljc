@@ -34,7 +34,7 @@
 (s/def ::spellcaster? boolean?)
 (s/def ::spellcasting-ability ::a/ability)
 
-(s/def ::spell-slot-count (s/and int? (complement neg?)))
+(s/def ::spell-slot-count nat-int?)
 (s/def ::level-spell-slots (s/coll-of ::spell-slot-count
                                       :into []
                                       :kind vector?
