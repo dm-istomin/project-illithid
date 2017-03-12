@@ -33,7 +33,8 @@
   (let [[db character-id] (gen-character-id db)
         saving-throw-proficiencies (-> new-character
                                        ::cl/id classes
-                                       ::cl/saving-throw-proficiencies)
+                                       ::cl/saving-throw-proficiencies
+                                       (or #{}))
         all-character-ids (conj (::db/character-ids db #{}) character-id)
         chr
         (-> new-character
