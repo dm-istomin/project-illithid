@@ -22,12 +22,13 @@
        [text-input {:placeholder "Gundrik Bjornsson"
                     :sub [::sub/name]
                     :pub ::pub/set-name
-                    :auto-capitalize "words"}]
+                    :auto-capitalize "words"
+                    :style {:padding 20}}]
 
        [text "Race"]
        [picker {:prompt "Pick a race for your character"
                 :mode "dialog"
-                :items (vals races)
+                :items (->> races vals (sort-by ::race/name))
                 :id-fn ::race/id
                 :display-fn ::race/name
                 :value (::race/id @character-race)
@@ -36,7 +37,7 @@
        [text "Class"]
        [picker {:prompt "Pick a race for your character"
                 :mode "dialog"
-                :items (vals classes)
+                :items (->> classes vals (sort-by ::cclass/name))
                 :id-fn ::cclass/id
                 :display-fn ::cclass/name
                 :value (::cclass/id @character-class)

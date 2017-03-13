@@ -3,7 +3,7 @@
             [clojure.test.check]
             [clojure.test.check.generators]
             [clojure.test.check.properties]
-            [re-frame.core :refer [dispatch]]
+            [re-frame.core :refer [subscribe dispatch]]
             [illithid.character.cclass :as cl]
             [illithid.character.classes :refer [classes]]
             [illithid.specs.reagent]
@@ -11,6 +11,9 @@
             [illithid.scenes.character.index :refer [character-index]]
             [illithid.scenes.character.new :as new-character]
             [illithid.scenes.character.show :refer [character-show-scene]]
+            [illithid.components.view-character.menu :as view-character-menu]
+            [illithid.scenes.character.prepare-spells
+             :refer [prepare-spells-scene]]
             [illithid.scenes.spells.list :refer [spell-list-scene]]
             [illithid.scenes.spells.detail :refer [spell-detail-scene]]))
 
@@ -24,10 +27,10 @@
 
   (s/def :action/icon string?)
   (s/def :action/ios-icon string?)
-  (s/def :action/onPress fn?)
+  (s/def :action/on-press fn?)
   (s/def :route/action (s/keys :req-un [:action/icon
                                         :action/ios-icon
-                                        :action/onPress]))
+                                        :action/on-press]))
 
   (s/def ::route (s/keys :req-un [:route/component]
                          :opt-un [:route/title :route/action]))
@@ -45,11 +48,24 @@
       :title "Characters"
       :action {:icon "add"
                :ios-icon "➕"
-               :onPress #(dispatch [:nav/push :characters-new-basic-info])}}
+               :on-press #(dispatch [:nav/push :characters-new-basic-info])}}
 
      :character-show
      {:component character-show-scene
-      :title "View Character"}
+      :title "View Character"
+      :action {:icon "menu"
+               :ios-icon "⋯"
+               :on-press #(view-character-menu/show)}}
+
+     :prepare-spells
+     {:component prepare-spells-scene
+      :title "Prepare Spells"
+      :action {:icon "check"
+               :ios-icon "✔️️"
+               :on-press (fn [{:keys [character-id]}]
+                           (dispatch
+                             [:illithid.handlers.prepare-spells/save
+                              {:illithid.character.core/id character-id}]))}}
 
      :characters-new-basic-info
      {:component new-character/basic-info
@@ -87,7 +103,10 @@
       (apply title (if params [params] []))
       (str title))))
 
-(defn action-for [route-key] (get-in routes [route-key :action]))
+(defn action-for [route-key & [params]]
+  (let [{:keys [on-press] :as action} (get-in routes [route-key :action])]
+    (if-not on-press action
+      (assoc action :onPress (partial on-press params)))))
 
 (defn to-route
   {:arglists '([route-key] [route-map])}
@@ -96,7 +115,7 @@
     (map? route)
     (-> route
         (update :title #(or % (title-for (:key route) (:params route))))
-        (update :action #(or % (action-for (:key route)))))
+        (update :action #(or % (action-for (:key route) (:params route)))))
 
     (keyword? route)
     {:key route

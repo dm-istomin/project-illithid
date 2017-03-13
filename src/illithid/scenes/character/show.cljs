@@ -11,3 +11,4 @@
                          (->> (keyword "illithid.character")))
         character (subscribe [::sub/get-character character-id])]
     (fn [] [show-character @character])))
+

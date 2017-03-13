@@ -9,4 +9,4 @@
         spells (if-let [cls (-> params :id keyword classes)]
                  (cl/spells cls)
                  (vals spells/spells))]
-    [spell-list spells]))
+    [spell-list {:spells spells}]))

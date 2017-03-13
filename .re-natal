@@ -8,7 +8,8 @@
     "prod": "env/prod"
   },
   "modules": [
-    "react-native-material-design"
+    "react-native-material-design",
+    "react-native-scrollable-tab-view"
   ],
   "imageDirs": [
     "images"

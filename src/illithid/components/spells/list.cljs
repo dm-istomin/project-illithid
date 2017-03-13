@@ -3,7 +3,7 @@
             [reagent.core :as r]
             [clojure.string :as string]
             [illithid.components.native
-             :refer [view text image list-view DataSource]]
+             :refer [view text image list-view DataSource touchable-highlight]]
             [illithid.character.spell :as sp]
             [illithid.character.cclass :as c]
             [illithid.character.classes :refer [classes]]
@@ -16,7 +16,7 @@
 ;;       (map classes)
 ;;       (map ::c/name)
 ;;       (string/join ", ")))
-(defn format-classes [classes]
+(defn- format-classes [classes]
   (string/join ", " (map #(-> % name string/capitalize) classes)))
 
 (def style {:view {:flex-direction "row"
@@ -33,31 +33,35 @@
                   :border-radius 25}
             :text {:font-weight "bold"}})
 
-(defn spell-level [{::sp/keys [level]}]
+(defn- spell-level [{::sp/keys [level]}]
   (if (zero? level) "Cantrip" (str "Level " level)))
 
-(defn spell-list-item [spell]
-  [ripple {:key (::sp/name spell)
+(defn- spell-list-item [{:keys [spell action]}]
+  [touchable-highlight {:key (::sp/name spell)
            :style (:view style)
            :on-press #(dispatch [:nav/push
                                  {:key :spell-detail
                                   :params {:spell-id (::sp/id spell)}}])}
-   [image {:style (:img style) :source logo-image/source}]
-   [view {:style {:flex-direction "column"}}
-    [text {:style (:text style)} (-> spell ::sp/name .toUpperCase)]
-    [text {:style {:color "darkgrey"
-                   :font-size 13}}
-     (str (spell-level spell) " • "
-          (format-classes (::sp/classes spell)))]]])
+   [view
+    [image {:style (:img style) :source logo-image/source}]
+    [view {:style {:flex-direction "column"}}
+     [text {:style (:text style)} (-> spell ::sp/name .toUpperCase)]
+     [text {:style {:color "darkgrey"
+                    :font-size 13}}
+      (str (spell-level spell) " • "
+           (format-classes (::sp/classes spell)))]
+     action]]])
 
 (def data-source (DataSource. #js{:rowHasChanged (fn [a b] false)}))
 
-(defn render-row [spell]
-  (r/as-element [spell-list-item spell]))
+(defn- render-row [{:keys [spell render-action]}]
+  (r/as-element
+    [spell-list-item {:spell spell
+                      :action (when render-action [render-action spell])}]))
 
-(defn spell-list [spells]
+(defn spell-list [{:keys [spells render-action]}]
   [list-view
-   {:render-row #(render-row %)
+   {:render-row #(render-row {:spell %, :render-action render-action})
     :dataSource (.cloneWithRows
                   data-source
                   (->> spells

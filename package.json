@@ -11,10 +11,12 @@
     "start": "node ./node_modules/.bin/react-native start"
   },
   "dependencies": {
+    "@exponent/react-native-action-sheet": "^0.3.0",
+    "babel-plugin-transform-es2015-block-scoping": "6.15.0",
     "react": "^15.4.1",
     "react-native": "0.38.0",
     "react-native-material-design": "^0.3.7",
-    "babel-plugin-transform-es2015-block-scoping": "6.15.0"
+    "react-native-scrollable-tab-view": "^0.7.2"
   },
   "devDependencies": {
     "karma-cljs-test": "^0.1.0",

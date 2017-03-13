@@ -15,6 +15,7 @@
 
 (def style
   {:view {:flex-direction "column"
+          :flex 1
           :border-color "lightgrey"
           :border-top-width 1
           :margin-top (platform/cond :ios 0 :android 56)}

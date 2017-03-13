@@ -7,12 +7,12 @@
              :refer [view text navigation-header navigation-header-title
                      touchable-opacity]]))
 
-(defn ios-action [{:keys [icon] on-press :onPress}]
+(defn ios-action [{icon :ios-icon on-press :onPress}]
   [touchable-opacity {:on-press on-press
                       :style {:height 24
                               :width 24
                               :margin 10}}
-   [text (get {"add" "➕"} icon "⁉️")]])
+   [text icon]])
 
 (defn header [props]
   (let [props (js->clj props :keywordize-keys true)]
